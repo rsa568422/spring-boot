@@ -16,23 +16,31 @@ public class IndexController {
 
     @GetMapping({"/index", "/", "", "/home"})
     public String index(Model model) {
-        model.addAttribute("title", "Hola spring framework");
+        model.addAttribute(TITLE, "Hola spring framework");
         return "index";
     }
 
     @RequestMapping("/profile")
     public String profile(Model model) {
         User user = new User("Roberto", "Sánchez", "rsa568422@gmail.com");
-        model.addAttribute("title", String.format("Profile: %s, %s", user.getSurname(), user.getName()));
+        model.addAttribute(TITLE, String.format("Profile: %s, %s", user.getSurname(), user.getName()));
         model.addAttribute("user", user);
         return "profile";
     }
 
     @RequestMapping("/list")
     public String list(Model model) {
-        List<User> users = new ArrayList<>();
-        model.addAttribute("title", "List of users");
+        List<User> users = Arrays.asList(
+                new User("Roberto", "Sánchez", "rsa568422@gmail.com"),
+                new User("Andres", "Guzmán", "andres@correo.com"),
+                new User("John", "Doe", "john@correo.com"),
+                new User("Jane", "Doe", "jane@correo.com"),
+                new User("Tornado", "Roe", "roe@correo.com")
+        );
+        model.addAttribute(TITLE, "List of users");
         model.addAttribute("users", users);
         return "list";
     }
+
+    private static final String TITLE = "title";
 }
