@@ -10,13 +10,17 @@ import udemy.springboot.di.app.models.services.IService;
 @Controller
 public class IndexController {
 
-    @Autowired
-    @Qualifier("myService")
     private IService service;
 
     @GetMapping({"", "/", "/index"})
     public String index(Model model) {
         model.addAttribute("result", service.operation());
         return "index";
+    }
+
+    @Autowired
+    @Qualifier("myService")
+    public void setService(IService service) {
+        this.service = service;
     }
 }
