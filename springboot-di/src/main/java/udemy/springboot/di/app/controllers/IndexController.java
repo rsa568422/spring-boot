@@ -1,16 +1,18 @@
 package udemy.springboot.di.app.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import udemy.springboot.di.app.models.services.MyService;
+import udemy.springboot.di.app.models.services.IService;
 
 @Controller
 public class IndexController {
 
     @Autowired
-    private MyService service;
+    @Qualifier("myService")
+    private IService service;
 
     @GetMapping({"", "/", "/index"})
     public String index(Model model) {
