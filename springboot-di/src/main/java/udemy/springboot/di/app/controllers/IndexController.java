@@ -19,7 +19,6 @@ public class IndexController {
     }
 
     @Autowired
-    @Qualifier("myService")
     public void setService(IService service) {
         this.service = service;
     }
