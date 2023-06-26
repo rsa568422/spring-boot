@@ -3,6 +3,7 @@ package udemy.springboot.web.app.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import udemy.springboot.web.app.models.User;
 
@@ -30,16 +31,19 @@ public class IndexController {
 
     @RequestMapping("/list")
     public String list(Model model) {
-        List<User> users = Arrays.asList(
+        model.addAttribute(TITLE, "List of users");
+        return "list";
+    }
+
+    @ModelAttribute("users")
+    public List<User> getUsers() {
+        return Arrays.asList(
                 new User("Roberto", "Sánchez", "rsa568422@gmail.com"),
                 new User("Andres", "Guzmán", "andres@correo.com"),
                 new User("John", "Doe", "john@correo.com"),
                 new User("Jane", "Doe", "jane@correo.com"),
                 new User("Tornado", "Roe", "roe@correo.com")
         );
-        model.addAttribute(TITLE, "List of users");
-        model.addAttribute("users", users);
-        return "list";
     }
 
     private static final String TITLE = "title";
