@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import udemy.springboot.form.app.models.entities.User;
 
@@ -17,11 +18,12 @@ public class FormController {
     @GetMapping("/form")
     public String form(Model model) {
         model.addAttribute("title", "Form usuario");
+        model.addAttribute("user", new User());
         return "form";
     }
 
     @PostMapping("/form")
-    public String process(@Valid User user, BindingResult result, Model model) {
+    public String process(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
         model.addAttribute("title", "Form Resultado");
         if (result.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
