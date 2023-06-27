@@ -2,7 +2,6 @@ package udemy.springboot.di.app.models.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +11,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Component
 public class Invoice {
@@ -23,5 +21,6 @@ public class Invoice {
     @Autowired
     private Client client;
 
+    @Autowired
     private List<InvoiceItem> items;
 }
