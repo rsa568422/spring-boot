@@ -19,6 +19,7 @@ public class IndexController {
     }
 
     @Autowired
+    @Qualifier("myComplexService")
     public void setService(IService service) {
         this.service = service;
     }
