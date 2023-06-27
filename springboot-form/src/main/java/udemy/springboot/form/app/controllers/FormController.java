@@ -16,7 +16,14 @@ public class FormController {
     @GetMapping("/form")
     public String form(Model model) {
         model.addAttribute("title", "Form usuario");
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new User(
+                "123.456.789-K",
+                null,
+                null,
+                null,
+                "John",
+                "Doe"
+        ));
         return "form";
     }
 
