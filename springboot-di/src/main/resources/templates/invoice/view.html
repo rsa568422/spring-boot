@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1 th:text="${title}"></h1>
-<h3 th:text="${invoice.description}"></h3>
+<h3 th:utext="${invoice.description}"></h3>
 <div>Client: <span th:utext="${invoice.client.name + ' ' + invoice.client.surname}"></span></div>
 <h4>Invoice details</h4>
 <table>
