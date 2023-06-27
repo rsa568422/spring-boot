@@ -3,6 +3,7 @@ package udemy.springboot.di.app.models.entities;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -20,5 +21,6 @@ public class Invoice {
     private Client client;
 
     @Autowired
+    @Qualifier("officeInvoiceItems")
     private List<InvoiceItem> items;
 }

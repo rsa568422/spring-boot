@@ -37,4 +37,19 @@ public class AppConfig {
                 new InvoiceItem(product2, 4)
         );
     }
+
+    @Bean("officeInvoiceItems")
+    public List<InvoiceItem> getOfficeInvoiceItems() {
+        Product product1 = new Product("Monitor LG 24\"", new BigDecimal("250"));
+        Product product2 = new Product("Notebook Asus", new BigDecimal("500"));
+        Product product3 = new Product("Impresora HP Multifunción", new BigDecimal("80"));
+        Product product4 = new Product("Escritorio oficina", new BigDecimal("300"));
+
+        return Arrays.asList(
+                new InvoiceItem(product1, 2),
+                new InvoiceItem(product2, 1),
+                new InvoiceItem(product3, 1),
+                new InvoiceItem(product4, 1)
+        );
+    }
 }
