@@ -1,8 +1,5 @@
 package udemy.springboot.di.app.models.services;
 
-import org.springframework.stereotype.Service;
-
-@Service("myComplexService")
 public class MyComplexService implements IService {
 
     @Override
