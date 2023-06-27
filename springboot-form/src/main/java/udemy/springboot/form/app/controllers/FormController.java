@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import udemy.springboot.form.app.models.entities.User;
 
 @Controller
 public class FormController {
@@ -21,9 +22,7 @@ public class FormController {
                           @RequestParam String password,
                           @RequestParam String email) {
         model.addAttribute("title", "Form Resultado");
-        model.addAttribute("username", username);
-        model.addAttribute("password", password);
-        model.addAttribute("email", email);
+        model.addAttribute("user", new User(username, password, email));
         return "result";
     }
 }
