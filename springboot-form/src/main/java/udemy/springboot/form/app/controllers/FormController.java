@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import udemy.springboot.form.app.models.entities.User;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 public class FormController {
@@ -26,13 +24,6 @@ public class FormController {
     public String process(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
         model.addAttribute("title", "Form Resultado");
         if (result.hasErrors()) {
-            Map<String, String> errors = new HashMap<>();
-            result.getFieldErrors().forEach(error -> errors.put(error.getField(), String.format(
-                    "The field %s have error: %s",
-                    error.getField(),
-                    error.getDefaultMessage()
-            )));
-            model.addAttribute("errors", errors);
             return "form";
         }
         model.addAttribute("user", user);
