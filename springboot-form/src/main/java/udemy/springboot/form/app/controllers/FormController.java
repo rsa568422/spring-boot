@@ -9,6 +9,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import udemy.springboot.form.app.editors.UpperCaseNameEditor;
+import udemy.springboot.form.app.models.entities.Country;
 import udemy.springboot.form.app.models.entities.User;
 import udemy.springboot.form.app.validations.UserValidation;
 
@@ -53,6 +54,19 @@ public class FormController {
         countries.put("CO", "Colombia");
         countries.put("VE", "Venezuela");
         return countries;
+    }
+
+    @ModelAttribute("countryList")
+    public List<Country> countryList() {
+        return Arrays.asList(
+                new Country(1, "ES", "España"),
+                new Country(2, "MX", "México"),
+                new Country(3, "CL", "Chile"),
+                new Country(4, "AR", "Argentina"),
+                new Country(5, "PE", "Perú"),
+                new Country(6, "CO", "Colombia"),
+                new Country(7, "VE",  "Venezuela")
+        );
     }
 
     @GetMapping("/form")
