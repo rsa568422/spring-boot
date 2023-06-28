@@ -44,7 +44,7 @@ public class User {
     private Country country;
 
     @NotEmpty
-    private List<String> roles;
+    private List<Role> roles;
 
     private String name;
 

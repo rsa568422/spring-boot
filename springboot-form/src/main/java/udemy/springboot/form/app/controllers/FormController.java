@@ -11,8 +11,10 @@ import org.springframework.web.bind.support.SessionStatus;
 import udemy.springboot.form.app.editors.CountryPropertyEditor;
 import udemy.springboot.form.app.editors.UpperCaseNameEditor;
 import udemy.springboot.form.app.models.entities.Country;
+import udemy.springboot.form.app.models.entities.Role;
 import udemy.springboot.form.app.models.entities.User;
 import udemy.springboot.form.app.services.CountryService;
+import udemy.springboot.form.app.services.RoleService;
 import udemy.springboot.form.app.validations.UserValidation;
 
 import javax.validation.Valid;
@@ -28,13 +30,17 @@ public class FormController {
 
     private final CountryPropertyEditor countryPropertyEditor;
 
-    private final CountryService service;
+    private final CountryService countryService;
+
+    private final RoleService roleService;
 
     @Autowired
-    public FormController(UserValidation userValidation, CountryPropertyEditor countryPropertyEditor, CountryService service) {
+    public FormController(UserValidation userValidation, CountryPropertyEditor countryPropertyEditor,
+                          CountryService countryService, RoleService roleService) {
         this.userValidation = userValidation;
         this.countryPropertyEditor = countryPropertyEditor;
-        this.service = service;
+        this.countryService = countryService;
+        this.roleService = roleService;
     }
 
     @InitBinder
@@ -50,12 +56,12 @@ public class FormController {
 
     @ModelAttribute("countries")
     public List<String> countries() {
-        return service.list().stream().map(Country::getName).collect(Collectors.toList());
+        return countryService.list().stream().map(Country::getName).collect(Collectors.toList());
     }
 
     @ModelAttribute("countriesMap")
     public Map<String, String> countriesMap() {
-        return service.list()
+        return countryService.list()
                 .stream()
                 .collect(Collectors.groupingBy(
                         Country::getCode,
@@ -65,10 +71,10 @@ public class FormController {
 
     @ModelAttribute("countryList")
     public List<Country> countryList() {
-        return service.list();
+        return countryService.list();
     }
 
-    @ModelAttribute("roles")
+    @ModelAttribute("rolesList")
     public List<String> roles() {
         return Arrays.asList("ROLE_ADMIN", "ROLE_USER", "ROLE_MODERATOR");
     }
@@ -80,6 +86,11 @@ public class FormController {
         roles.put("ROLE_USER", "Usuario");
         roles.put("ROLE_MODERATOR", "Moderador");
         return roles;
+    }
+
+    @ModelAttribute("roles")
+    public List<Role> roleList() {
+        return roleService.list();
     }
 
     @GetMapping("/form")
