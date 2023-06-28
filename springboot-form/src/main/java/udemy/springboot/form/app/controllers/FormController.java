@@ -11,11 +11,13 @@ import org.springframework.web.bind.support.SessionStatus;
 import udemy.springboot.form.app.editors.UpperCaseNameEditor;
 import udemy.springboot.form.app.models.entities.Country;
 import udemy.springboot.form.app.models.entities.User;
+import udemy.springboot.form.app.services.CountryService;
 import udemy.springboot.form.app.validations.UserValidation;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @SessionAttributes("user")
@@ -23,9 +25,12 @@ public class FormController {
 
     private final UserValidation userValidation;
 
+    private final CountryService service;
+
     @Autowired
-    public FormController(UserValidation userValidation) {
+    public FormController(UserValidation userValidation, CountryService service) {
         this.userValidation = userValidation;
+        this.service = service;
     }
 
     @InitBinder
@@ -40,33 +45,22 @@ public class FormController {
 
     @ModelAttribute("countries")
     public List<String> countries() {
-        return Arrays.asList("España", "México", "Chile", "Argentina", "Perú", "Colombia", "Venezuela");
+        return service.list().stream().map(Country::getName).collect(Collectors.toList());
     }
 
     @ModelAttribute("countriesMap")
     public Map<String, String> countriesMap() {
-        Map<String, String> countries = new HashMap<>();
-        countries.put("ES", "España");
-        countries.put("MX", "México");
-        countries.put("CL", "Chile");
-        countries.put("AR", "Argentina");
-        countries.put("PE", "Perú");
-        countries.put("CO", "Colombia");
-        countries.put("VE", "Venezuela");
-        return countries;
+        return service.list()
+                .stream()
+                .collect(Collectors.groupingBy(
+                        Country::getCode,
+                        Collectors.collectingAndThen(Collectors.toList(), list -> list.get(0).getName())
+                ));
     }
 
     @ModelAttribute("countryList")
     public List<Country> countryList() {
-        return Arrays.asList(
-                new Country(1, "ES", "España"),
-                new Country(2, "MX", "México"),
-                new Country(3, "CL", "Chile"),
-                new Country(4, "AR", "Argentina"),
-                new Country(5, "PE", "Perú"),
-                new Country(6, "CO", "Colombia"),
-                new Country(7, "VE",  "Venezuela")
-        );
+        return service.list();
     }
 
     @GetMapping("/form")
