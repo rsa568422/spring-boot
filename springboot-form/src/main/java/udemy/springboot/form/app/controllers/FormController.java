@@ -9,6 +9,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import udemy.springboot.form.app.editors.CountryPropertyEditor;
+import udemy.springboot.form.app.editors.RolePropertyEditor;
 import udemy.springboot.form.app.editors.UpperCaseNameEditor;
 import udemy.springboot.form.app.models.entities.Country;
 import udemy.springboot.form.app.models.entities.Role;
@@ -30,15 +31,19 @@ public class FormController {
 
     private final CountryPropertyEditor countryPropertyEditor;
 
+    private final RolePropertyEditor rolePropertyEditor;
+
     private final CountryService countryService;
 
     private final RoleService roleService;
 
     @Autowired
     public FormController(UserValidation userValidation, CountryPropertyEditor countryPropertyEditor,
-                          CountryService countryService, RoleService roleService) {
+                          RolePropertyEditor rolePropertyEditor, CountryService countryService,
+                          RoleService roleService) {
         this.userValidation = userValidation;
         this.countryPropertyEditor = countryPropertyEditor;
+        this.rolePropertyEditor = rolePropertyEditor;
         this.countryService = countryService;
         this.roleService = roleService;
     }
@@ -52,6 +57,7 @@ public class FormController {
         binder.registerCustomEditor(String.class, "name", new UpperCaseNameEditor());
         binder.registerCustomEditor(String.class, "surname", new UpperCaseNameEditor());
         binder.registerCustomEditor(Country.class, "country", countryPropertyEditor);
+        binder.registerCustomEditor(Role.class, "roles", rolePropertyEditor);
     }
 
     @ModelAttribute("countries")

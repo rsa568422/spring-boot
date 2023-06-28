@@ -21,7 +21,11 @@
   </ul>
   <span>Roles</span>
   <ul>
-    <li th:each="role : ${user.roles}" th:text="${role}"></li>
+    <li th:each="role : ${user.roles}">
+      <span th:text="${role.id}"></span>:
+      <span th:text="${role.name}"></span> =>
+      <span th:text="${role.description}"></span>
+    </li>
   </ul>
 </body>
 </html>
