@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 import udemy.springboot.form.app.validations.IdentifierRegex;
 import udemy.springboot.form.app.validations.Required;
 
@@ -38,7 +37,6 @@ public class User {
 
     @NotNull
     @Past
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
 
     private String name;

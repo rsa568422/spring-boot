@@ -1,6 +1,7 @@
 package udemy.springboot.form.app.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,6 +12,8 @@ import udemy.springboot.form.app.models.entities.User;
 import udemy.springboot.form.app.validations.UserValidation;
 
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Controller
 @SessionAttributes("user")
@@ -26,6 +29,9 @@ public class FormController {
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.addValidators(userValidation);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        format.setLenient(false);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(format, false));
     }
 
     @GetMapping("/form")
