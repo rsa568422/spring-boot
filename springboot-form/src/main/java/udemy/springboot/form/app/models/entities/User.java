@@ -46,6 +46,8 @@ public class User {
     @NotEmpty
     private List<Role> roles;
 
+    private Boolean enable;
+
     private String name;
 
     @Required

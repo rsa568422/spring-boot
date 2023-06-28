@@ -7,6 +7,7 @@
 <body>
   <h3 th:text="${title}"></h3>
   <ul>
+    <li th:text="'Enabled: ' + ${user.enable}"></li>
     <li th:text="${user.identifier}"></li>
     <li th:text="${user.country.id}"></li>
     <li th:text="${user.country.code}"></li>
