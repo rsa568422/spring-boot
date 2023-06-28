@@ -37,6 +37,7 @@ public class User {
     private Integer account;
 
     @NotNull
+    @Past
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
 

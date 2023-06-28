@@ -59,7 +59,7 @@
     <div>
       <label for="birthday">Birthday</label>
       <div>
-        <input type="text" id="birthday" th:field="*{birthday}" placeholder="yyyy-MM-dd">
+        <input type="date" id="birthday" th:field="*{birthday}" placeholder="yyyy-MM-dd">
       </div>
       <div th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></div>
     </div>
