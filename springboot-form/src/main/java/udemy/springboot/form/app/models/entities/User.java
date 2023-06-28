@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import udemy.springboot.form.app.validations.IdentifierRegex;
+import udemy.springboot.form.app.validations.Required;
 
 import javax.validation.constraints.*;
 
@@ -25,11 +26,11 @@ public class User {
     private String password;
 
     @Email(message = "correo con formato incorrecto")
-    @NotEmpty
+    @Required
     private String email;
 
     private String name;
 
-    @NotEmpty
+    @Required
     private String surname;
 }
