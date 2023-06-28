@@ -14,9 +14,7 @@ import udemy.springboot.form.app.validations.UserValidation;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @SessionAttributes("user")
@@ -42,6 +40,19 @@ public class FormController {
     @ModelAttribute("countries")
     public List<String> countries() {
         return Arrays.asList("España", "México", "Chile", "Argentina", "Perú", "Colombia", "Venezuela");
+    }
+
+    @ModelAttribute("countriesMap")
+    public Map<String, String> countriesMap() {
+        Map<String, String> countries = new HashMap<>();
+        countries.put("ES", "España");
+        countries.put("MX", "México");
+        countries.put("CL", "Chile");
+        countries.put("AR", "Argentina");
+        countries.put("PE", "Perú");
+        countries.put("CO", "Colombia");
+        countries.put("VE", "Venezuela");
+        return countries;
     }
 
     @GetMapping("/form")
