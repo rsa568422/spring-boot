@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import udemy.springboot.form.app.editors.UpperCaseNameEditor;
 import udemy.springboot.form.app.models.entities.User;
 import udemy.springboot.form.app.validations.UserValidation;
 
@@ -32,6 +33,8 @@ public class FormController {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         format.setLenient(false);
         binder.registerCustomEditor(Date.class, "birthday", new CustomDateEditor(format, true));
+        binder.registerCustomEditor(String.class, "name", new UpperCaseNameEditor());
+        binder.registerCustomEditor(String.class, "surname", new UpperCaseNameEditor());
     }
 
     @GetMapping("/form")
