@@ -7,7 +7,6 @@ import lombok.Setter;
 import udemy.springboot.form.app.validations.IdentifierRegex;
 import udemy.springboot.form.app.validations.Required;
 
-import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.Date;
 
@@ -40,7 +39,7 @@ public class User {
     @Past
     private Date birthday;
 
-    @Valid
+    @NotNull
     private Country country;
 
     private String name;
