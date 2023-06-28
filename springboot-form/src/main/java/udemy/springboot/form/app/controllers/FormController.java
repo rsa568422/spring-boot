@@ -68,6 +68,11 @@ public class FormController {
         return service.list();
     }
 
+    @ModelAttribute("roles")
+    public List<String> roles() {
+        return Arrays.asList("ROLE_ADMIN", "ROLE_USER", "ROLE_MODERATOR");
+    }
+
     @GetMapping("/form")
     public String form(Model model) {
         model.addAttribute("title", "Form usuario");
@@ -77,6 +82,7 @@ public class FormController {
                 null,
                 "rsa568422@gmail.com",
                 5,
+                null,
                 null,
                 null,
                 "John",

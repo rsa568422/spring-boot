@@ -9,6 +9,7 @@ import udemy.springboot.form.app.validations.Required;
 
 import javax.validation.constraints.*;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -41,6 +42,9 @@ public class User {
 
     @NotNull
     private Country country;
+
+    @NotEmpty
+    private List<String> roles;
 
     private String name;
 
