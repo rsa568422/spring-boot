@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Getter
 @Setter
@@ -18,7 +15,7 @@ public class User {
 
     private String identifier;
 
-    @NotEmpty
+    @NotBlank
     @Size(min = 3, max = 8)
     private String username;
 
