@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import udemy.springboot.form.app.validations.IdentifierRegex;
 
 import javax.validation.constraints.*;
 
@@ -13,6 +14,7 @@ import javax.validation.constraints.*;
 @AllArgsConstructor
 public class User {
 
+    @IdentifierRegex
     private String identifier;
 
     @NotBlank
