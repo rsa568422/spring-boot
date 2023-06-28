@@ -39,6 +39,9 @@ public class User {
     @Past
     private Date birthday;
 
+    @NotEmpty
+    private String country;
+
     private String name;
 
     @Required

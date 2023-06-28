@@ -14,7 +14,9 @@ import udemy.springboot.form.app.validations.UserValidation;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @SessionAttributes("user")
@@ -37,19 +39,19 @@ public class FormController {
         binder.registerCustomEditor(String.class, "surname", new UpperCaseNameEditor());
     }
 
+    @ModelAttribute("countries")
+    public List<String> countries() {
+        return Arrays.asList("España", "México", "Chile", "Argentina", "Perú", "Colombia", "Venezuela");
+    }
+
     @GetMapping("/form")
     public String form(Model model) {
         model.addAttribute("title", "Form usuario");
-        model.addAttribute("user", new User(
-                "12.456.789-K",
-                null,
-                null,
-                null,
-                5,
-                null,
-                "John",
-                "Doe"
-        ));
+        User user = new User();
+        user.setIdentifier("12.456.789-K");
+        user.setName("John");
+        user.setSurname("Doe");
+        model.addAttribute("user", user);
         return "form";
     }
 

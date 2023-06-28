@@ -8,64 +8,74 @@
   <h3 th:text="${title}"></h3>
   <form th:action="@{/form}" th:object="${user}" method="post">
     <div>
+      <label for="country">Country</label>
+      <div>
+        <select id="country" th:field="*{country}">
+          <option value="">-- Seleccionar --</option>
+          <option th:each="country : ${countries}" th:text="${country}" th:value="${country}"></option>
+        </select>
+      </div>
+      <div th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></div>
+    </div>
+    <div>
       <label for="identifier">Identifier</label>
       <div>
-        <input type="text" id="identifier" th:field="*{identifier}">
+        <input type="text" id="identifier" th:field="*{identifier}" />
       </div>
       <div th:if="${#fields.hasErrors('identifier')}" th:errors="*{identifier}"></div>
     </div>
     <div>
       <label for="name">Name</label>
       <div>
-        <input type="text" id="name" th:field="*{name}">
+        <input type="text" id="name" th:field="*{name}" />
       </div>
       <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
     </div>
     <div>
       <label for="username">Surname</label>
       <div>
-        <input type="text" id="surname" th:field="*{surname}">
+        <input type="text" id="surname" th:field="*{surname}" />
       </div>
       <div th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></div>
     </div>
     <div>
       <label for="username">User name</label>
       <div>
-        <input type="text" id="username" th:field="*{username}">
+        <input type="text" id="username" th:field="*{username}" />
       </div>
       <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
     </div>
     <div>
       <label for="password">Password</label>
       <div>
-        <input type="password" id="password" th:field="*{password}">
+        <input type="password" id="password" th:field="*{password}" />
       </div>
       <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
     </div>
     <div>
       <label for="email">Email</label>
       <div>
-        <input type="text" id="email" th:field="*{email}">
+        <input type="text" id="email" th:field="*{email}" />
       </div>
       <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
     </div>
     <div>
       <label for="account">Account</label>
       <div>
-        <input type="number" id="account" th:field="*{account}">
+        <input type="number" id="account" th:field="*{account}" />
       </div>
       <div th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></div>
     </div>
     <div>
       <label for="birthday">Birthday</label>
       <div>
-        <input type="date" id="birthday" th:field="*{birthday}" placeholder="yyyy-MM-dd">
+        <input type="date" id="birthday" th:field="*{birthday}" placeholder="yyyy-MM-dd" />
       </div>
       <div th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></div>
     </div>
     <div>
       <div>
-        <input type="submit" value="send">
+        <input type="submit" value="send" />
       </div>
     </div>
   </form>
