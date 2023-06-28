@@ -16,10 +16,9 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class User {
 
-    @Pattern(regexp = "\\d{2}[.]\\d{3}[.]\\d{3}-[A-Z]")
     private String identifier;
 
-    @NotEmpty(message = "el nombre no puede estar vacío")
+    @NotEmpty
     @Size(min = 3, max = 8)
     private String username;
 
@@ -30,7 +29,6 @@ public class User {
     @NotEmpty
     private String email;
 
-    @NotEmpty
     private String name;
 
     @NotEmpty
