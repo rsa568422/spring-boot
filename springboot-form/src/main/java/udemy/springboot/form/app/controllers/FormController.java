@@ -47,10 +47,17 @@ public class FormController {
     @GetMapping("/form")
     public String form(Model model) {
         model.addAttribute("title", "Form usuario");
-        User user = new User();
-        user.setIdentifier("12.456.789-K");
-        user.setName("John");
-        user.setSurname("Doe");
+        User user = new User(
+                "12.456.789-K",
+                "john",
+                null,
+                "rsa568422@gmail.com",
+                5,
+                null,
+                null,
+                "John",
+                "Doe"
+        );
         model.addAttribute("user", user);
         return "form";
     }
