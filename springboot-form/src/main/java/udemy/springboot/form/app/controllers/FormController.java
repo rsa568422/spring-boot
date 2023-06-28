@@ -32,10 +32,11 @@ public class FormController {
     public String form(Model model) {
         model.addAttribute("title", "Form usuario");
         model.addAttribute("user", new User(
-                "123.456.789-K",
+                "12.456.789-K",
                 null,
                 null,
                 null,
+                5,
                 "John",
                 "Doe"
         ));

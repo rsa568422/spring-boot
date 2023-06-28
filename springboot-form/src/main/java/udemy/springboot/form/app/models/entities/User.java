@@ -29,6 +29,11 @@ public class User {
     @Required
     private String email;
 
+    @NotNull
+    @Min(5)
+    @Max(5000)
+    private Integer account;
+
     private String name;
 
     @Required
