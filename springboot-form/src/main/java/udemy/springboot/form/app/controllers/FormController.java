@@ -118,6 +118,7 @@ public class FormController {
                 null,
                 true,
                 null,
+                "Algún valor secreto ********",
                 "John",
                 "Doe"
         );

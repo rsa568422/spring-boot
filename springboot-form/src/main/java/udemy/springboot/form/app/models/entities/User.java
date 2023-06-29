@@ -51,6 +51,8 @@ public class User {
     @NotEmpty
     private String gender;
 
+    private String secret;
+
     private String name;
 
     @Required
