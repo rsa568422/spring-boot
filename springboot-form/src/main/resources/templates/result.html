@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${title}"></title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+  <div class="container">
+    <a th:href="@{/form}" class="btn btn-success btn-lg my-3">Back</a>
+    <ul class="list-group my-3">
+      <li class="list-group-item active" th:text="${title}"></li>
+      <li class="list-group-item" th:text="'Enabled: ' + ${user.enable}"></li>
+      <li class="list-group-item" th:text="'Gender: ' + ${user.gender}"></li>
+      <li class="list-group-item" th:text="${user.identifier}"></li>
+      <li class="list-group-item" th:text="${user.country.id}"></li>
+      <li class="list-group-item" th:text="${user.country.code}"></li>
+      <li class="list-group-item" th:text="${user.country.name}"></li>
+      <li class="list-group-item" th:text="${user.name}"></li>
+      <li class="list-group-item" th:text="${user.surname}"></li>
+      <li class="list-group-item" th:text="${user.username}"></li>
+      <li class="list-group-item" th:text="${user.password}"></li>
+      <li class="list-group-item" th:text="${user.email}"></li>
+      <li class="list-group-item" th:text="${user.account}"></li>
+      <li class="list-group-item" th:text="${#calendars.format(user.birthday, 'dd/MM/yyyy')}"></li>
+      <li class="list-group-item" th:text="'Valor oculto: ' + ${user.secret}"></li>
+    </ul>
+    <ul class="list-group my-3">
+      <li class="list-group-item active" th:text="'Roles'"></li>
+      <li class="list-group-item" th:each="role : ${user.roles}">
+        <span th:text="${role.id}"></span>:
+        <span th:text="${role.name}"></span> =>
+        <span th:text="${role.description}"></span>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>
