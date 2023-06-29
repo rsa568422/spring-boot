@@ -106,18 +106,20 @@ public class FormController {
 
     @GetMapping("/form")
     public String form(Model model) {
-        model.addAttribute("title", "Form usuario");
+        model.addAttribute(TITLE, "Form usuario");
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
         User user = new User(
                 "12.456.789-K",
                 "john",
                 null,
                 "rsa568422@gmail.com",
                 5,
-                null,
+                calendar.getTime(),
                 countryService.findById(3),
                 Collections.singletonList(roleService.findById(2)),
                 true,
-                null,
+                "Hombre",
                 "Algún valor secreto ********",
                 "John",
                 "Doe"
@@ -129,7 +131,7 @@ public class FormController {
     @PostMapping("/form")
     public String process(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("title", "Form Resultado");
+            model.addAttribute(TITLE, "Form Resultado");
             return "form";
         }
         return "redirect:/view";
@@ -137,8 +139,10 @@ public class FormController {
     @GetMapping("/view")
     public String view(@SessionAttribute(name = "user", required = false) User user, Model model, SessionStatus status) {
         if (Objects.isNull(user)) return "redirect:/form";
-        model.addAttribute("title", "Form Resultado");
+        model.addAttribute(TITLE, "Form Resultado");
         status.setComplete();
         return "result";
     }
+
+    private static final String TITLE = "title";
 }
