@@ -48,6 +48,9 @@ public class User {
 
     private Boolean enable;
 
+    @NotEmpty
+    private String gender;
+
     private String name;
 
     @Required

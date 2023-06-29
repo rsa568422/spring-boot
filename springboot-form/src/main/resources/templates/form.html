@@ -14,6 +14,14 @@
       </div>
     </div>
     <div>
+      <label>Gender</label>
+      <div th:each="gender : ${genders}">
+        <input type="radio" th:field="*{gender}" th:value="${gender}"/>
+        <label th:for="${#ids.prev('gender')}" th:text="${gender}"></label>
+      </div>
+      <div th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></div>
+    </div>
+    <div>
       <label for="country">Country</label>
       <div>
         <select id="country" th:field="*{country}">

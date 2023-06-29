@@ -99,6 +99,11 @@ public class FormController {
         return roleService.list();
     }
 
+    @ModelAttribute("genders")
+    public List<String> genders() {
+        return Arrays.asList("Hombre", "Mujer");
+    }
+
     @GetMapping("/form")
     public String form(Model model) {
         model.addAttribute("title", "Form usuario");
@@ -112,6 +117,7 @@ public class FormController {
                 null,
                 null,
                 true,
+                null,
                 "John",
                 "Doe"
         );
