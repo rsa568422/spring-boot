@@ -2,12 +2,14 @@ package udemy.springboot.hours.app.interceptors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Calendar;
+import java.util.Objects;
 
 @Component("hoursInterceptor")
 public class HoursInterceptor implements HandlerInterceptor {
@@ -42,6 +44,7 @@ public class HoursInterceptor implements HandlerInterceptor {
                            Object handler,
                            ModelAndView modelAndView) throws Exception {
         String message = (String) request.getAttribute("message");
-        modelAndView.addObject("message", message);
+        if (Objects.nonNull(modelAndView) && handler instanceof HandlerMethod)
+            modelAndView.addObject("message", message);
     }
 }
