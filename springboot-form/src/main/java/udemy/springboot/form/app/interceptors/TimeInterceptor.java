@@ -21,6 +21,9 @@ public class TimeInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
                              Object handler) throws Exception {
+        if (request.getMethod().equalsIgnoreCase("post")) {
+            return true;
+        }
         if (handler instanceof HandlerMethod) {
             log.info("Controller method: {}", ((HandlerMethod) handler).getMethod().getName());
         }
@@ -28,7 +31,7 @@ public class TimeInterceptor implements HandlerInterceptor {
         log.info("Intercepting: {}", handler);
         long init = System.currentTimeMillis();
         request.setAttribute("init", init);
-        Thread.sleep(SecureRandom.getInstanceStrong().nextInt(500));
+        Thread.sleep(SecureRandom.getInstanceStrong().nextInt(100));
         return true;
     }
 
@@ -37,13 +40,16 @@ public class TimeInterceptor implements HandlerInterceptor {
                            HttpServletResponse response,
                            Object handler,
                            ModelAndView modelAndView) throws Exception {
-        long init = (Long) request.getAttribute("init");
-        long end = System.currentTimeMillis();
-        long time = end - init;
-        if (handler instanceof HandlerMethod && Objects.nonNull(modelAndView)) {
-            modelAndView.addObject("time", time);
+        Object object = request.getAttribute("init");
+        if (Objects.nonNull(object)) {
+            long init = (Long) object;
+            long end = System.currentTimeMillis();
+            long time = end - init;
+            if (handler instanceof HandlerMethod && Objects.nonNull(modelAndView)) {
+                modelAndView.addObject("time", time);
+            }
+            log.info("Time: {}", time);
+            log.info("TimeInterceptor: postHandle(...)");
         }
-        log.info("Time: {}", time);
-        log.info("TimeInterceptor: postHandle(...)");
     }
 }
