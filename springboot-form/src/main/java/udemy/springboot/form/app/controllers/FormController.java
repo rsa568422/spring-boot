@@ -127,12 +127,17 @@ public class FormController {
     }
 
     @PostMapping("/form")
-    public String process(@Valid @ModelAttribute("user") User user, BindingResult result, Model model, SessionStatus status) {
-        model.addAttribute("title", "Form Resultado");
+    public String process(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("title", "Form Resultado");
             return "form";
         }
-        model.addAttribute("user", user);
+        return "redirect:/view";
+    }
+    @GetMapping("/view")
+    public String view(@SessionAttribute(name = "user", required = false) User user, Model model, SessionStatus status) {
+        if (Objects.isNull(user)) return "redirect:/form";
+        model.addAttribute("title", "Form Resultado");
         status.setComplete();
         return "result";
     }
