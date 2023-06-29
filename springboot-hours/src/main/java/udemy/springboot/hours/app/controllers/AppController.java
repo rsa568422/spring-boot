@@ -14,7 +14,7 @@ public class AppController {
     @Value("${config.hours.close}")
     private Integer close;
 
-    @GetMapping({"/", "/index"})
+    @GetMapping({"", "/", "/index"})
     public String index(Model model) {
         model.addAttribute("title", "Bienvenido al horario de atención a clientes");
         return "index";

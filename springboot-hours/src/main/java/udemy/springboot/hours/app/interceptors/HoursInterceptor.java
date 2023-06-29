@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Calendar;
 
-@Component
+@Component("hoursInterceptor")
 public class HoursInterceptor implements HandlerInterceptor {
 
     @Value("${config.hours.open}")
@@ -21,6 +21,7 @@ public class HoursInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        System.out.println(hour);
         if (hour >= open && hour < close) {
             StringBuilder message = new StringBuilder("Bienvenido al horario de atención a clientes");
             message.append(", atendemos desde las ");
