@@ -40,16 +40,16 @@ public class TimeInterceptor implements HandlerInterceptor {
                            HttpServletResponse response,
                            Object handler,
                            ModelAndView modelAndView) throws Exception {
-        Object object = request.getAttribute("init");
-        if (Objects.nonNull(object)) {
-            long init = (Long) object;
-            long end = System.currentTimeMillis();
-            long time = end - init;
-            if (handler instanceof HandlerMethod && Objects.nonNull(modelAndView)) {
-                modelAndView.addObject("time", time);
-            }
-            log.info("Time: {}", time);
-            log.info("TimeInterceptor: postHandle(...)");
+        if (request.getMethod().equalsIgnoreCase("post")) {
+            return;
         }
+        long init = (Long) request.getAttribute("init");
+        long end = System.currentTimeMillis();
+        long time = end - init;
+        if (handler instanceof HandlerMethod && Objects.nonNull(modelAndView)) {
+            modelAndView.addObject("time", time);
+        }
+        log.info("Time: {}", time);
+        log.info("TimeInterceptor: postHandle(...)");
     }
 }
