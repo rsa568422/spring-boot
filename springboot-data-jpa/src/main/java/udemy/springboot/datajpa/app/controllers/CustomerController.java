@@ -5,13 +5,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import udemy.springboot.datajpa.app.models.daos.CustomerDao;
 import udemy.springboot.datajpa.app.models.entities.Customer;
 
 import javax.validation.Valid;
 
 @Controller
+@SessionAttributes("customer")
 public class CustomerController {
 
     private final CustomerDao customerDao;
@@ -35,13 +39,24 @@ public class CustomerController {
         return "form";
     }
 
+    @GetMapping("/form/{id}")
+    public String update(@PathVariable(value = "id") Long id, Model model) {
+        Customer customer;
+        if (id > 0) customer = customerDao.findOne(id);
+        else return "redirect:/list";
+        model.addAttribute("title", "Editar cliente");
+        model.addAttribute("customer", customer);
+        return "form";
+    }
+
     @PostMapping("/form")
-    public String save(@Valid Customer customer, BindingResult result, Model model) {
+    public String save(@Valid Customer customer, BindingResult result, Model model, SessionStatus status) {
         if (result.hasErrors()) {
             model.addAttribute("title", "Formulario de cliente");
             return "form";
         }
         customerDao.save(customer);
+        status.setComplete();
         return "redirect:list";
     }
 }

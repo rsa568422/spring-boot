@@ -25,7 +25,7 @@
     </nav>
     <div class="container">
         <h1 class="text-secondary border border-success border-top-0 border-left-0 border-right-0" th:text="${title}"></h1>
-        <a th:href="@{/form}">Crear cliente</a>
+        <p><a th:href="@{/form}" class="btn btn-success btn-xs">Crear cliente</a></p>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -34,15 +34,17 @@
                 <th>apellido</th>
                 <th>email</th>
                 <th>fecha</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="customer : ${customers}">
-                <th th:text="${customer.id}"></th>
-                <th th:text="${customer.name}"></th>
-                <th th:text="${customer.surname}"></th>
-                <th th:text="${customer.email}"></th>
-                <th th:text="${customer.createAt}"></th>
+                <td th:text="${customer.id}"></td>
+                <td th:text="${customer.name}"></td>
+                <td th:text="${customer.surname}"></td>
+                <td th:text="${customer.email}"></td>
+                <td th:text="${customer.createAt}"></td>
+                <td><a th:href="@{/form/} + ${customer.id}" th:text="editar" class="btn btn-primary btn-xs"></a></td>
             </tr>
             </tbody>
         </table>
