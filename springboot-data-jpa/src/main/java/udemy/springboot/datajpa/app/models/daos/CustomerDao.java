@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface CustomerDao {
 
-    public List<Customer> findAll();
+    List<Customer> findAll();
+
+    void save(Customer customer);
 }

@@ -20,4 +20,10 @@ public class CustomerDaoImpl implements CustomerDao {
     public List<Customer> findAll() {
         return em.createQuery("from Customer").getResultList();
     }
+
+    @Override
+    @Transactional
+    public void save(Customer customer) {
+        em.persist(customer);
+    }
 }
