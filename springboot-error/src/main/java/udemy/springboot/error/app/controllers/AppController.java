@@ -5,8 +5,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import udemy.springboot.error.app.exceptions.UserNotFoundException;
 import udemy.springboot.error.app.model.entities.User;
 import udemy.springboot.error.app.services.UserService;
+
+import java.util.Objects;
 
 @Controller
 public class AppController {
@@ -27,6 +30,7 @@ public class AppController {
     @GetMapping("/view/{id}")
     public String view(@PathVariable Integer id, Model model) {
         User user = service.findById(id);
+        if (Objects.isNull(user)) throw new UserNotFoundException(id.toString());
         model.addAttribute("title", String.format("Detalles del usuario: %s", user.getName()));
         model.addAttribute("user", user);
         return "view";
