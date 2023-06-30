@@ -6,8 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
-import udemy.springboot.datajpa.app.models.daos.CustomerDao;
 import udemy.springboot.datajpa.app.models.entities.Customer;
+import udemy.springboot.datajpa.app.models.services.CustomerService;
 
 import javax.validation.Valid;
 
@@ -15,17 +15,17 @@ import javax.validation.Valid;
 @SessionAttributes("customer")
 public class CustomerController {
 
-    private final CustomerDao customerDao;
+    private final CustomerService service;
 
     @Autowired
-    public CustomerController(CustomerDao customerDao) {
-        this.customerDao = customerDao;
+    public CustomerController(CustomerService service) {
+        this.service = service;
     }
 
     @GetMapping("/list")
     public String list(Model model) {
         model.addAttribute("title", "Listado de clientes");
-        model.addAttribute("customers", customerDao.findAll());
+        model.addAttribute("customers", service.findAll());
         return "list";
     }
 
@@ -39,7 +39,7 @@ public class CustomerController {
     @GetMapping("/form/{id}")
     public String update(@PathVariable(value = "id") Long id, Model model) {
         Customer customer;
-        if (id > 0) customer = customerDao.findOne(id);
+        if (id > 0) customer = service.findOne(id);
         else return "redirect:/list";
         model.addAttribute("title", "Editar cliente");
         model.addAttribute("customer", customer);
@@ -52,14 +52,14 @@ public class CustomerController {
             model.addAttribute("title", "Formulario de cliente");
             return "form";
         }
-        customerDao.save(customer);
+        service.save(customer);
         status.setComplete();
         return "redirect:list";
     }
 
     @RequestMapping(value = "/delete/{id}")
     public String delete(@PathVariable(value = "id") Long id) {
-        if (id > 0) customerDao.delete(id);
+        if (id > 0) service.delete(id);
         return "redirect:/list";
     }
 }
