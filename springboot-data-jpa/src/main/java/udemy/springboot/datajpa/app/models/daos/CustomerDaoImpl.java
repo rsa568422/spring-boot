@@ -23,6 +23,12 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public Customer findOne(Long id) {
+        return em.find(Customer.class, id);
+    }
+
+    @Override
     @Transactional
     public void save(Customer customer) {
         if (Objects.nonNull(customer.getId()) && customer.getId() > 0) em.merge(customer);
@@ -30,7 +36,8 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public Customer findOne(Long id) {
-        return em.find(Customer.class, id);
+    @Transactional
+    public void delete(Long id) {
+        em.remove(findOne(id));
     }
 }

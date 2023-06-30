@@ -8,7 +8,9 @@ public interface CustomerDao {
 
     List<Customer> findAll();
 
+    Customer findOne(Long id);
+
     void save(Customer customer);
 
-    Customer findOne(Long id);
+    void delete(Long id);
 }
