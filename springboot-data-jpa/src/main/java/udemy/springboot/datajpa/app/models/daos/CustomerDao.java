@@ -1,16 +1,8 @@
 package udemy.springboot.datajpa.app.models.daos;
 
+import org.springframework.data.repository.CrudRepository;
 import udemy.springboot.datajpa.app.models.entities.Customer;
 
-import java.util.List;
+public interface CustomerDao extends CrudRepository<Customer, Long> {
 
-public interface CustomerDao {
-
-    List<Customer> findAll();
-
-    Customer findOne(Long id);
-
-    void save(Customer customer);
-
-    void delete(Long id);
 }
