@@ -5,6 +5,7 @@ import udemy.springboot.error.app.model.entities.User;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,7 +26,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(Integer id) {
-        return USERS.stream().filter(user -> user.getId().equals(id)).findFirst().orElse(null);
+    public Optional<User> findById(Integer id) {
+        return USERS.stream().filter(user -> user.getId().equals(id)).findFirst();
     }
 }
