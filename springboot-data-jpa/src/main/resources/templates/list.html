@@ -3,33 +3,39 @@
 <head th:replace="layout/layout :: head"></head>
 <body>
     <header th:replace="layout/layout :: header"></header>
-    <div class="container">
-        <h1 class="text-secondary border border-success border-top-0 border-left-0 border-right-0" th:text="${title}"></h1>
-        <p><a th:href="@{/form}" class="btn btn-success btn-xs">Crear cliente</a></p>
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>id</th>
-                <th>nombre</th>
-                <th>apellido</th>
-                <th>email</th>
-                <th>fecha</th>
-                <th></th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="customer : ${customers}">
-                <td th:text="${customer.id}"></td>
-                <td th:text="${customer.name}"></td>
-                <td th:text="${customer.surname}"></td>
-                <td th:text="${customer.email}"></td>
-                <td th:text="${customer.createAt}"></td>
-                <td><a th:href="@{/form/} + ${customer.id}" th:text="editar" class="btn btn-primary btn-xs"></a></td>
-                <td><a th:href="@{/delete/} + ${customer.id}" th:text="eliminar" class="btn btn-danger btn-xs" onclick="return confirm('¿Desea eliminar el cliente?')"></a></td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="container py-4">
+        <div class="card bg-light">
+            <div class="card-header" th:text="${title}"></div>
+            <div class="card-body">
+                <h4 class="card-title">
+                    <a th:href="@{/form}" class="btn btn-primary btn-xs">Crear cliente</a>
+                </h4>
+                <table class="table table-striped">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>id</th>
+                        <th>nombre</th>
+                        <th>apellido</th>
+                        <th>email</th>
+                        <th>fecha</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="customer : ${customers}">
+                        <td th:text="${customer.id}"></td>
+                        <td th:text="${customer.name}"></td>
+                        <td th:text="${customer.surname}"></td>
+                        <td th:text="${customer.email}"></td>
+                        <td th:text="${customer.createAt}"></td>
+                        <td><a th:href="@{/form/} + ${customer.id}" th:text="editar" class="btn btn-primary btn-xs"></a></td>
+                        <td><a th:href="@{/delete/} + ${customer.id}" th:text="eliminar" class="btn btn-danger btn-xs" onclick="return confirm('¿Desea eliminar el cliente?')"></a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     <footer th:replace="layout/layout :: footer"></footer>
 </body>
