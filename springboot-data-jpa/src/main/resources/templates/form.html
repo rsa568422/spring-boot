@@ -28,25 +28,29 @@
             <div class="from-group row">
                 <label class="col-sm-2 col-form-label">Nombre</label>
                 <div class="col-sm-6">
-                    <input type="text" th:field="*{name}" class="form-control"/>
+                    <input type="text" th:field="*{name}" class="form-control" th:errorclass="'form-control alert-danger'"/>
+                    <small th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="form-text text-danger"></small>
                 </div>
             </div>
             <div class="from-group row">
                 <label class="col-sm-2 col-form-label">Apellido</label>
                 <div class="col-sm-6">
-                    <input type="text" th:field="*{surname}" class="form-control"/>
+                    <input type="text" th:field="*{surname}" class="form-control" th:errorclass="'form-control alert-danger'"/>
+                    <small th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}" class="form-text text-danger"></small>
                 </div>
             </div>
             <div class="from-group row">
             <label class="col-sm-2 col-form-label">Email</label>
                 <div class="col-sm-6">
-                    <input type="email" th:field="*{email}" class="form-control"/>
+                    <input type="text" th:field="*{email}" class="form-control" th:errorclass="'form-control alert-danger'"/>
+                    <small th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="form-text text-danger"></small>
                 </div>
             </div>
             <div class="from-group row">
-                <label class="col-sm-2 col-form-label">Creation date</label>
-                <div>
-                    <input type="text" th:field="*{createAt}" class="form-control"/>
+                <label class="col-sm-2 col-form-label">Fecha de registro</label>
+                <div class="col-sm-6">
+                    <input type="text" th:field="*{createAt}" class="form-control" th:errorclass="'form-control alert-danger'"/>
+                    <small th:if="${#fields.hasErrors('createAt')}" th:errors="*{createAt}" class="form-text text-danger"></small>
                 </div>
             </div>
             <div class="from-group row">

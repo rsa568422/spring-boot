@@ -7,6 +7,9 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -23,12 +26,17 @@ public class Customer implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @NotEmpty
     private String name;
 
+    @NotEmpty
     private String surname;
 
+    @Email
+    @NotEmpty
     private String email;
 
+    @NotNull
     @Column(name = "create_at")
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
