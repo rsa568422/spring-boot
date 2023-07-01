@@ -9,12 +9,17 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import udemy.springboot.datajpa.app.models.entities.Customer;
 import udemy.springboot.datajpa.app.models.services.CustomerService;
 import udemy.springboot.datajpa.app.utils.paginators.PageRender;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Objects;
 
 @Controller
@@ -65,10 +70,25 @@ public class CustomerController {
     }
 
     @PostMapping("/form")
-    public String save(@Valid Customer customer, BindingResult result, Model model, RedirectAttributes flash, SessionStatus status) {
+    public String save(@Valid Customer customer, BindingResult result, Model model,
+                       @RequestParam("file") MultipartFile photo, RedirectAttributes flash,
+                       SessionStatus status) {
         if (result.hasErrors()) {
             model.addAttribute("title", "Formulario de cliente");
             return "form";
+        }
+        if (!photo.isEmpty()) {
+            Path resourcesDirectory = Paths.get("springboot-data-jpa\\src\\main\\resources\\static\\uploads");
+            String rootPath = resourcesDirectory.toFile().getAbsolutePath();
+            try {
+                byte[] bytes = photo.getBytes();
+                Path fullPath = Paths.get(String.format("%s\\%s", rootPath, photo.getOriginalFilename()));
+                Files.write(fullPath, bytes);
+                flash.addFlashAttribute("info", String.format("Ha subido correctamente: '%s'", photo.getOriginalFilename()));
+                customer.setPhoto(photo.getOriginalFilename());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         String message = customer.getId() == null
                 ? "Cliente creado con éxito"
