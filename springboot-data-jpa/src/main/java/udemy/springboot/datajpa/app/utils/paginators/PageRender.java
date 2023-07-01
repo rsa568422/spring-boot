@@ -22,33 +22,34 @@ public class PageRender<T> {
     private int pageElements;
 
     @Getter
-    private int pageIndex;
+    private int actualPage;
 
     public PageRender(String url, Page<T> page) {
         this.url = url;
         this.page = page;
-        this.pageTotal = page.getTotalPages();
         this.pageElements = page.getSize();
-        this.pageIndex = page.getNumber();
+        this.pageTotal = page.getTotalPages();
+        this.actualPage = page.getNumber() + 1;
 
         int from, to;
         if(pageTotal <= pageElements) {
             from = 1;
             to = pageTotal;
         } else {
-            if (pageIndex <= pageElements / 2) {
+            if (actualPage <= pageElements / 2) {
                 from = 1;
                 to = pageElements;
-            } else if(pageIndex >= pageTotal - pageElements / 2) {
+            } else if(actualPage >= pageTotal - pageElements / 2) {
                 from = pageTotal - pageElements + 1;
                 to = pageElements;
             } else {
-                from = pageIndex - pageElements / 2;
+                from = actualPage - pageElements / 2;
                 to = pageElements;
             }
         }
         for (int i = 0; i < to; i++) {
-            pages.add(new PageItem(from + i, pageIndex == from + i));
+            int pageNumber = from + i;
+            pages.add(new PageItem(pageNumber, pageNumber == actualPage));
         }
     }
 
