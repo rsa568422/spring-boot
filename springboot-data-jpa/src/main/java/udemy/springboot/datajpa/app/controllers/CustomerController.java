@@ -1,6 +1,8 @@
 package udemy.springboot.datajpa.app.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,9 +27,10 @@ public class CustomerController {
     }
 
     @GetMapping("/list")
-    public String list(Model model) {
+    public String list(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
+        Pageable pageRequest = PageRequest.of(page, 4);
         model.addAttribute("title", "Listado de clientes");
-        model.addAttribute("customers", service.findAll());
+        model.addAttribute("customers", service.findAll(pageRequest));
         return "list";
     }
 
