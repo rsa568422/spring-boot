@@ -90,11 +90,10 @@ public class CustomerController {
             return "form";
         }
         if (!photo.isEmpty()) {
-            Path resourcesDirectory = Paths.get("springboot-data-jpa\\src\\main\\resources\\static\\uploads");
-            String rootPath = resourcesDirectory.toFile().getAbsolutePath();
+            String rootPath = "D://DEV//PROJECTS//spring-boot//springboot-data-jpa//uploads";
             try {
                 byte[] bytes = photo.getBytes();
-                Path fullPath = Paths.get(String.format("%s\\%s", rootPath, photo.getOriginalFilename()));
+                Path fullPath = Paths.get(String.format("%s//%s", rootPath, photo.getOriginalFilename()));
                 Files.write(fullPath, bytes);
                 flash.addFlashAttribute("info", String.format("Ha subido correctamente: '%s'", photo.getOriginalFilename()));
                 customer.setPhoto(photo.getOriginalFilename());
