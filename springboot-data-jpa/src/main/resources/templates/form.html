@@ -12,7 +12,7 @@
                         <li th:each="error : ${#fields.errors('*')}" th:text="${error}"></li>
                     </ul>
                 </div>
-                <form th:action="@{/form}" th:object="${customer}" method="post">
+                <form th:action="@{/form}" th:object="${customer}" method="post" enctype="multipart/form-data">
                     <div class="from-group row">
                         <label class="col-sm-2 col-form-label">Nombre</label>
                         <div class="col-sm-6">
@@ -39,6 +39,12 @@
                         <div class="col-sm-6">
                             <input type="text" th:field="*{createAt}" class="form-control" th:errorclass="'form-control alert-danger'"/>
                             <small th:if="${#fields.hasErrors('createAt')}" th:errors="*{createAt}" class="form-text text-danger"></small>
+                        </div>
+                    </div>
+                    <div class="from-group row">
+                        <label class="col-sm-2 col-form-label">Foto</label>
+                        <div class="col-sm-6">
+                            <input type="file" name="file" class="form-control"/>
                         </div>
                     </div>
                     <div class="from-group row">
