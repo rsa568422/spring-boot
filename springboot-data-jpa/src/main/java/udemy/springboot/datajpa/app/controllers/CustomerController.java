@@ -22,6 +22,7 @@ import udemy.springboot.datajpa.app.models.services.CustomerService;
 import udemy.springboot.datajpa.app.utils.paginators.PageRender;
 
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -45,7 +46,7 @@ public class CustomerController {
 
     @GetMapping("/uploads/{filename:.+}")
     public ResponseEntity<Resource> viewPhoto(@PathVariable("filename") String fileName) {
-        Path photoPath = Paths.get("uploads").resolve(fileName).toAbsolutePath();
+        Path photoPath = Paths.get(UPLOADS_FOLDER).resolve(fileName).toAbsolutePath();
         log.info("photoPath: {}", photoPath);
         Resource resource = null;
         try {
@@ -65,11 +66,11 @@ public class CustomerController {
     public String view(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
         Customer customer = service.findOne(id);
         if (Objects.isNull(customer)) {
-            flash.addFlashAttribute("error", "el cliente no existe");
-            return "redirect:/list";
+            flash.addFlashAttribute(ERROR, "el cliente no existe");
+            return REDIRECT_TO_LIST;
         }
-        model.addAttribute("title", String.format("Detalles del cliente: %s", customer.getName()));
-        model.addAttribute("customer", customer);
+        model.addAttribute(TITLE, String.format("Detalles del cliente: %s", customer.getName()));
+        model.addAttribute(CUSTOMER, customer);
         return "view";
     }
 
@@ -78,7 +79,7 @@ public class CustomerController {
         Pageable pageRequest = PageRequest.of(page, 4);
         Page<Customer> customers = service.findAll(pageRequest);
         PageRender<Customer> pageRender = new PageRender<>("/list", customers);
-        model.addAttribute("title", "Listado de clientes");
+        model.addAttribute(TITLE, "Listado de clientes");
         model.addAttribute("customers", customers);
         model.addAttribute("page", pageRender);
         return "list";
@@ -86,8 +87,8 @@ public class CustomerController {
 
     @GetMapping("/form")
     public String create(Model model) {
-        model.addAttribute("title", "Formulario de cliente");
-        model.addAttribute("customer", new Customer());
+        model.addAttribute(TITLE, "Formulario de cliente");
+        model.addAttribute(CUSTOMER, new Customer());
         return "form";
     }
 
@@ -97,15 +98,15 @@ public class CustomerController {
         if (id > 0) {
             customer = service.findOne(id);
             if (Objects.isNull(customer)) {
-                flash.addFlashAttribute("error", "El id del cliente no existe");
-                return "redirect:/list";
+                flash.addFlashAttribute(ERROR, "El id del cliente no existe");
+                return REDIRECT_TO_LIST;
             }
         } else {
-            flash.addFlashAttribute("error", "El id del cliente no puede ser cero");
-            return "redirect:/list";
+            flash.addFlashAttribute(ERROR, "El id del cliente no puede ser cero");
+            return REDIRECT_TO_LIST;
         }
-        model.addAttribute("title", "Editar cliente");
-        model.addAttribute("customer", customer);
+        model.addAttribute(TITLE, "Editar cliente");
+        model.addAttribute(CUSTOMER, customer);
         return "form";
     }
 
@@ -114,12 +115,20 @@ public class CustomerController {
                        @RequestParam("file") MultipartFile photo, RedirectAttributes flash,
                        SessionStatus status) {
         if (result.hasErrors()) {
-            model.addAttribute("title", "Formulario de cliente");
+            model.addAttribute(TITLE, "Formulario de cliente");
             return "form";
         }
         if (!photo.isEmpty()) {
+            Path uploads = Paths.get(UPLOADS_FOLDER);
+            if (Objects.nonNull(customer.getId()) && customer.getId() > 0 &&
+                    Objects.nonNull(customer.getPhoto()) && customer.getPhoto().length() > 0) {
+                File file = uploads.resolve(customer.getPhoto()).toAbsolutePath().toFile();
+                if (file.exists() && file.canRead()) {
+                    file.delete();
+                }
+            }
             String fileName = String.format("%s_%s", UUID.randomUUID(), photo.getOriginalFilename());
-            Path rootPath = Paths.get("uploads").resolve(fileName);
+            Path rootPath = uploads.resolve(fileName);
             log.info(rootPath.toAbsolutePath().toString());
             try {
                 Files.copy(photo.getInputStream(), rootPath.toAbsolutePath());
@@ -141,9 +150,20 @@ public class CustomerController {
     @RequestMapping(value = "/delete/{id}")
     public String delete(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
         if (id > 0) {
+            Customer customer = service.findOne(id);
+            File file = Paths.get(UPLOADS_FOLDER).resolve(customer.getPhoto()).toAbsolutePath().toFile();
+            if (file.exists() && file.canRead() && file.delete()) {
+                flash.addFlashAttribute("info", String.format("Foto '%s' eliminada con éxito", customer.getPhoto()));
+            }
             service.delete(id);
             flash.addFlashAttribute("success", "Cliente eliminado con éxito");
         }
-        return "redirect:/list";
+        return REDIRECT_TO_LIST;
     }
+
+    private static final String UPLOADS_FOLDER = "uploads";
+    private static final String ERROR = "error";
+    private static final String TITLE = "title";
+    private static final String CUSTOMER = "customer";
+    private static final String REDIRECT_TO_LIST = "redirect:/list";
 }
