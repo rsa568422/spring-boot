@@ -1,5 +1,7 @@
 package udemy.springboot.datajpa.app.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,12 +23,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.UUID;
 
 @Controller
 @SessionAttributes("customer")
 public class CustomerController {
 
     private final CustomerService service;
+
+    private final Logger log = LoggerFactory.getLogger(CustomerController.class);
 
     @Autowired
     public CustomerController(CustomerService service) {
@@ -90,13 +95,13 @@ public class CustomerController {
             return "form";
         }
         if (!photo.isEmpty()) {
-            String rootPath = "D://DEV//PROJECTS//spring-boot//springboot-data-jpa//uploads";
+            String fileName = String.format("%s_%s", UUID.randomUUID(), photo.getOriginalFilename());
+            Path rootPath = Paths.get("uploads").resolve(fileName);
+            log.info(rootPath.toAbsolutePath().toString());
             try {
-                byte[] bytes = photo.getBytes();
-                Path fullPath = Paths.get(String.format("%s//%s", rootPath, photo.getOriginalFilename()));
-                Files.write(fullPath, bytes);
-                flash.addFlashAttribute("info", String.format("Ha subido correctamente: '%s'", photo.getOriginalFilename()));
-                customer.setPhoto(photo.getOriginalFilename());
+                Files.copy(photo.getInputStream(), rootPath.toAbsolutePath());
+                flash.addFlashAttribute("info", String.format("Ha subido correctamente: '%s'", fileName));
+                customer.setPhoto(fileName);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

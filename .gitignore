@@ -32,4 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 
-/springboot-data-jpa/uploads/
+/uploads/
