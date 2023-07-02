@@ -33,6 +33,18 @@ public class CustomerController {
         this.service = service;
     }
 
+    @GetMapping("/view/{id}")
+    public String view(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
+        Customer customer = service.findOne(id);
+        if (Objects.isNull(customer)) {
+            flash.addFlashAttribute("error", "el cliente no existe");
+            return "redirect:/list";
+        }
+        model.addAttribute("title", String.format("Detalles del cliente: %s", customer.getName()));
+        model.addAttribute("customer", customer);
+        return "view";
+    }
+
     @GetMapping("/list")
     public String list(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
         Pageable pageRequest = PageRequest.of(page, 4);
