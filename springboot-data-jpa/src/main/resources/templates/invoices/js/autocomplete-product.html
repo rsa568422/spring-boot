@@ -36,6 +36,9 @@
 					return false;
 				}
 			});
+			$("form").submit(function() {
+				$("#templateInvoiceItems").remove();
+			});
 		});
 
 		var itemsHelper = {

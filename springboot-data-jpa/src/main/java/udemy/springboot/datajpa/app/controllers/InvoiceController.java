@@ -1,18 +1,22 @@
 package udemy.springboot.datajpa.app.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import udemy.springboot.datajpa.app.models.entities.Customer;
 import udemy.springboot.datajpa.app.models.entities.Invoice;
+import udemy.springboot.datajpa.app.models.entities.InvoiceItem;
 import udemy.springboot.datajpa.app.models.entities.Product;
 import udemy.springboot.datajpa.app.models.services.CustomerService;
 
 import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 @Controller
 @RequestMapping("/invoice")
 @SessionAttributes("invoice")
@@ -42,5 +46,24 @@ public class InvoiceController {
     @GetMapping(value = "/load-products/{term}", produces = {"application/json"})
     public @ResponseBody List<Product> loadProducts(@PathVariable String term) {
         return customerService.findByName(term);
+    }
+
+    @PostMapping("/form")
+    public String save(Invoice invoice,
+                       @RequestParam(name = "item_id[]", required = false) Long[] itemIds,
+                       @RequestParam(name = "quantity[]", required = false) Integer[] quantities,
+                       RedirectAttributes flash, SessionStatus status) {
+        for (int i = 0; i < itemIds.length; i++) {
+            Product product = customerService.findProductById(itemIds[i]);
+            InvoiceItem item = new InvoiceItem();
+            item.setQuantity(quantities[i]);
+            item.setProduct(product);
+            invoice.addItem(item);
+            log.info("ID: {}, quantity: {}", itemIds[i], quantities[i]);
+        }
+        customerService.saveInvoice(invoice);
+        status.setComplete();
+        flash.addFlashAttribute("success", "Factura creada con éxito");
+        return String.format("redirect:/view/%d", invoice.getCustomer().getId());
     }
 }
