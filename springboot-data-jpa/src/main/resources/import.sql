@@ -23,3 +23,20 @@ INSERT INTO customers (name, surname, email, create_at, photo) VALUES('John', 'S
 INSERT INTO customers (name, surname, email, create_at, photo) VALUES('Joe', 'Bloggs', 'joe.bloggs@gmail.com', '2017-08-23', '');
 INSERT INTO customers (name, surname, email, create_at, photo) VALUES('John', 'Stiles', 'john.stiles@gmail.com', '2017-08-24', '');
 INSERT INTO customers (name, surname, email, create_at, photo) VALUES('Richard', 'Roe', 'stiles.roe@gmail.com', '2017-08-25', '');
+
+INSERT INTO products (name, price, create_at) VALUES('Panasonic Pantalla LCD', 259990, NOW());
+INSERT INTO products (name, price, create_at) VALUES('Sony Camara digital DSC-W320B', 123490, NOW());
+INSERT INTO products (name, price, create_at) VALUES('Apple iPod shuffle', 1499990, NOW());
+INSERT INTO products (name, price, create_at) VALUES('Sony Notebook Z110', 37990, NOW());
+INSERT INTO products (name, price, create_at) VALUES('Hewlett Packard Multifuncional F2280', 69990, NOW());
+INSERT INTO products (name, price, create_at) VALUES('Bianchi Bicicleta Aro 26', 69990, NOW());
+INSERT INTO products (name, price, create_at) VALUES('Mica Cómoda 5 Cajones', 299990, NOW());
+
+INSERT INTO invoices (description, observations, customer_id, create_at) VALUES('Factura equipos de oficina', null, 1, NOW());
+INSERT INTO invoice_items (quantity, invoice_id, product_id) VALUES(1, 1, 1);
+INSERT INTO invoice_items (quantity, invoice_id, product_id) VALUES(2, 1, 4);
+INSERT INTO invoice_items (quantity, invoice_id, product_id) VALUES(1, 1, 5);
+INSERT INTO invoice_items (quantity, invoice_id, product_id) VALUES(1, 1, 7);
+
+INSERT INTO invoices (description, observations, customer_id, create_at) VALUES('Factura Bicicleta', 'Alguna nota importante!', 1, NOW());
+INSERT INTO invoice_items (quantity, invoice_id, product_id) VALUES(3, 2, 6);

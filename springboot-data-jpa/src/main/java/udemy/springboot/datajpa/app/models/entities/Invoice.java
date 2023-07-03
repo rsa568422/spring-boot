@@ -33,7 +33,7 @@ public class Invoice implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Customer customer;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "invoice_id")
     private List<InvoiceItem> items;
 
