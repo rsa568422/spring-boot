@@ -7,6 +7,9 @@
         <div class="card bg-light">
             <div class="card-header" th:text="${title}"></div>
             <div class="card-body">
+                <h4 class="card-title">
+                    <a th:href="@{'/invoice/form/' + ${customer.id}}" th:text="'crear factura'" class="btn btn-success btn-xs"></a>
+                </h4>
                 <img th:if="${#strings.length(customer.photo) > 0}" class="img-thumbnail rounded float-left" style="max-width: 25%" th:src="@{'/uploads/' + ${customer.photo}}" th:alt="${customer.photo}" />
                 <ul class="list-group">
                     <li class="list-group-item" th:text="${customer.name}"></li>
