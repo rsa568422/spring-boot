@@ -6,8 +6,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import udemy.springboot.datajpa.app.models.daos.CustomerDao;
+import udemy.springboot.datajpa.app.models.daos.InvoiceDao;
 import udemy.springboot.datajpa.app.models.daos.ProductDao;
 import udemy.springboot.datajpa.app.models.entities.Customer;
+import udemy.springboot.datajpa.app.models.entities.Invoice;
 import udemy.springboot.datajpa.app.models.entities.Product;
 
 import java.util.List;
@@ -19,10 +21,13 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final ProductDao productDao;
 
+    private final InvoiceDao invoiceDao;
+
     @Autowired
-    public CustomerServiceImpl(CustomerDao customerDao, ProductDao productDao) {
+    public CustomerServiceImpl(CustomerDao customerDao, ProductDao productDao, InvoiceDao invoiceDao) {
         this.customerDao = customerDao;
         this.productDao = productDao;
+        this.invoiceDao = invoiceDao;
     }
 
     @Override
@@ -58,5 +63,11 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<Product> findByName(String term) {
         return productDao.findByNameLikeIgnoreCase(String.format("%%%s%%", term));
+    }
+
+    @Override
+    @Transactional
+    public void saveInvoice(Invoice invoice) {
+        invoiceDao.save(invoice);
     }
 }
