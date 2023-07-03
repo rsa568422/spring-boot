@@ -2,17 +2,17 @@ package udemy.springboot.datajpa.app.models.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "invoices")
 public class Invoice implements Serializable {
@@ -32,8 +32,20 @@ public class Invoice implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Customer customer;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "invoice_id")
+    private List<InvoiceItem> items;
+
+    public Invoice() {
+        items = new ArrayList<>();
+    }
+
     @PrePersist
     public void prePersist() {
         createAt = new Date();
+    }
+
+    public void addItem(InvoiceItem item) {
+        items.add(item);
     }
 }
