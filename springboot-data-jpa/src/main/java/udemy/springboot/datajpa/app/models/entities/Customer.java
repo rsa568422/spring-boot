@@ -54,4 +54,9 @@ public class Customer implements Serializable {
     public void addInvoice(Invoice invoice) {
         invoices.add(invoice);
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s", name, surname);
+    }
 }

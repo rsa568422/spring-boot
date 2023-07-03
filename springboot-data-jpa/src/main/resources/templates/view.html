@@ -25,6 +25,7 @@
                             <th>Descripción</th>
                             <th>Fecha</th>
                             <th>Total</th>
+                            <th>Ver</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -33,6 +34,7 @@
                             <td th:text="${invoice.description}"></td>
                             <td th:text="${invoice.createAt}"></td>
                             <td th:text="${invoice.total}"></td>
+                            <td><a class="btn btn-primary btn-xs" th:href="@{'/invoice/view/' + ${invoice.id}}" th:text="'detalle'"></a></td>
                         </tr>
                     </tbody>
                 </table>
