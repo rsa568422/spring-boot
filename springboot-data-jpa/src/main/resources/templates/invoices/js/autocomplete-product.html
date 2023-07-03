@@ -23,6 +23,10 @@
 					});
 				},
 				select : function(event, ui) {
+					if (itemsHelper.hasProduct(ui.item.value)) {
+						itemsHelper.incrementQuantity(ui.item.value, ui.item.price);
+						return false;
+					}
 					var line = $("#templateInvoiceItems").html();
 					line = line.replace(/{ID}/g, ui.item.value);
 					line = line.replace(/{NAME}/g, ui.item.label);
@@ -36,7 +40,22 @@
 
 		var itemsHelper = {
 			calculatePrice: function(id, price, quantity) {
+				console.log("Price: " + (parseFloat(price) * parseInt(quantity)));
 				$("#total_price_" + id).html(parseFloat(price) * parseInt(quantity));
+			},
+			hasProduct: function(id) {
+				var result = false;
+				$("input[name='item_id[]']").each(function() {
+					if (parseInt(id) == parseInt($(this).val())) {
+						result = true;
+					}
+				});
+				return result;
+			},
+			incrementQuantity: function(id, price) {
+				var quantity = $("#quantity_" + id).val() ? parseInt($("#quantity_" + id).val()) : 0;
+				$("#quantity_" + id).val(++quantity);
+				this.calculatePrice(id, price, quantity);
 			}
 		};
 	</script>
