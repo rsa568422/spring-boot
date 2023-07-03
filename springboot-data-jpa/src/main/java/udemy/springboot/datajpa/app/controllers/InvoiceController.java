@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -13,6 +14,7 @@ import udemy.springboot.datajpa.app.models.entities.InvoiceItem;
 import udemy.springboot.datajpa.app.models.entities.Product;
 import udemy.springboot.datajpa.app.models.services.CustomerService;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,10 +51,19 @@ public class InvoiceController {
     }
 
     @PostMapping("/form")
-    public String save(Invoice invoice,
+    public String save(@Valid Invoice invoice, BindingResult result, Model model,
                        @RequestParam(name = "item_id[]", required = false) Long[] itemIds,
                        @RequestParam(name = "quantity[]", required = false) Integer[] quantities,
                        RedirectAttributes flash, SessionStatus status) {
+        if (result.hasErrors()) {
+            model.addAttribute("title", "Crear factura");
+            return "invoices/form";
+        }
+        if (Objects.isNull(itemIds) || itemIds.length == 0) {
+            model.addAttribute("title", "Crear factura");
+            model.addAttribute("error", "la factura debe contener alguna línea");
+            return "invoices/form";
+        }
         for (int i = 0; i < itemIds.length; i++) {
             Product product = customerService.findProductById(itemIds[i]);
             InvoiceItem item = new InvoiceItem();
