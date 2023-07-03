@@ -23,4 +23,6 @@ public interface CustomerService {
     List<Product> findByName(String term);
 
     void saveInvoice(Invoice invoice);
+
+    Product findProductById(Long id);
 }
