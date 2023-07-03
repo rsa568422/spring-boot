@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,5 +48,11 @@ public class Invoice implements Serializable {
 
     public void addItem(InvoiceItem item) {
         items.add(item);
+    }
+
+    public BigDecimal getTotal() {
+        return items.stream()
+                .map(InvoiceItem::getTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
