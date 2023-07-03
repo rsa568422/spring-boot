@@ -28,10 +28,17 @@
 					line = line.replace(/{NAME}/g, ui.item.label);
 					line = line.replace(/{PRICE}/g, ui.item.price);
 					$("#loadItemProducts tbody").append(line);
+					itemsHelper.calculatePrice(ui.item.value, ui.item.price, 1);
 					return false;
 				}
 			});
 		});
+
+		var itemsHelper = {
+			calculatePrice: function(id, price, quantity) {
+				$("#total_price_" + id).html(parseFloat(price) * parseInt(quantity));
+			}
+		};
 	</script>
 </body>
 </html>
