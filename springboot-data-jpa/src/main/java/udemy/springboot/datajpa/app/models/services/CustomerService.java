@@ -25,4 +25,6 @@ public interface CustomerService {
     void saveInvoice(Invoice invoice);
 
     Product findProductById(Long id);
+
+    Invoice findInvoiceById(Long id);
 }
