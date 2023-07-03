@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
     <table th:fragment="invoiceItems" class="d-none">
-        <tbody>
+        <tbody id="templateInvoiceItems">
             <tr id="row_{ID}">
                 <td class="d-none">
                     <input type="hidden" value="{ID}" name="item_id[]">
