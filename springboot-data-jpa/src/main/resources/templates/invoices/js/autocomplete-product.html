@@ -42,6 +42,7 @@
 			calculatePrice: function(id, price, quantity) {
 				console.log("Price: " + (parseFloat(price) * parseInt(quantity)));
 				$("#total_price_" + id).html(parseFloat(price) * parseInt(quantity));
+				this.calculateTotal();
 			},
 			hasProduct: function(id) {
 				var result = false;
@@ -59,6 +60,14 @@
 			},
 			removeInvoiceItem: function(id) {
 				$("#row_" + id).remove();
+				this.calculateTotal();
+			},
+			calculateTotal: function() {
+				var total = 0;
+				$("span[id^='total_price_']").each(function() {
+					total += parseFloat($(this).html());
+				});
+				$("#invoice_total").html(total);
 			}
 		};
 	</script>
