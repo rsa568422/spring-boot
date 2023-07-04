@@ -33,7 +33,7 @@ public class InvoiceController {
 
     @GetMapping("/view/{id}")
     public String view(@PathVariable Long id, Model model, RedirectAttributes flash) {
-        Invoice invoice = customerService.findInvoiceById(id);
+        Invoice invoice = customerService.fetchByIdWithCustomerWithInvoiceItemWithProduct(id);
         if (Objects.isNull(invoice)) {
             flash.addFlashAttribute("error", "la factura no existe");
             return "redirect:/list";
