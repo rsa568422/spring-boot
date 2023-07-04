@@ -29,4 +29,8 @@ public interface CustomerService {
     Invoice findInvoiceById(Long id);
 
     void deleteInvoice(Long id);
+
+    Invoice fetchByIdWithCustomerWithInvoiceItemWithProduct(Long id);
+
+    Customer fetchByIdWithInvoices(Long id);
 }

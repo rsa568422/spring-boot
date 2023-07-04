@@ -88,4 +88,16 @@ public class CustomerServiceImpl implements CustomerService {
     public void deleteInvoice(Long id) {
         invoiceDao.deleteById(id);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Invoice fetchByIdWithCustomerWithInvoiceItemWithProduct(Long id) {
+        return invoiceDao.fetchByIdWithCustomerWithInvoiceItemWithProduct(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Customer fetchByIdWithInvoices(Long id) {
+        return customerDao.fetchByIdWithInvoices(id);
+    }
 }
