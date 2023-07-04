@@ -41,6 +41,13 @@
                         </tbody>
                     </table>
                     <h5 class="float-right">Total <span th:text="${invoice.total}" class="badge badge-secondary"></span></h5>
+                    <div class="card border-info mb-4" style="max-width: 20rem;">
+                        <div class="card-header">Observaciones</div>
+                        <div class="card-body">
+                            <p class="card-text" th:text="${invoice.observations}" th:if="${not #strings.isEmpty(invoice.observations)}"></p>
+                            <h4 class="card-title" th:text="'No tiene observaciones'" th:if="${#strings.isEmpty(invoice.observations)}"></h4>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
