@@ -2,7 +2,6 @@ package udemy.springboot.datajpa.app.models.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -11,12 +10,13 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "customers")
 public class Customer implements Serializable {
@@ -42,5 +42,21 @@ public class Customer implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createAt;
 
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Invoice> invoices;
+
     private String photo;
+
+    public Customer() {
+        invoices = new ArrayList<>();
+    }
+
+    public void addInvoice(Invoice invoice) {
+        invoices.add(invoice);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s", name, surname);
+    }
 }
