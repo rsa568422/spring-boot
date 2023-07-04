@@ -94,4 +94,10 @@ public class CustomerServiceImpl implements CustomerService {
     public Invoice fetchByIdWithCustomerWithInvoiceItemWithProduct(Long id) {
         return invoiceDao.fetchByIdWithCustomerWithInvoiceItemWithProduct(id);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Customer fetchByIdWithInvoices(Long id) {
+        return customerDao.fetchByIdWithInvoices(id);
+    }
 }
