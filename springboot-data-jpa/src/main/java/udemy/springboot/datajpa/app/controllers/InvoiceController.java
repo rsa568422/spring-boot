@@ -89,4 +89,16 @@ public class InvoiceController {
         flash.addFlashAttribute("success", "Factura creada con éxito");
         return String.format("redirect:/view/%d", invoice.getCustomer().getId());
     }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id, RedirectAttributes flash) {
+        Invoice invoice = customerService.findInvoiceById(id);
+        if (Objects.nonNull(invoice)) {
+            customerService.deleteInvoice(id);
+            flash.addFlashAttribute("success", "factura eliminada con éxito");
+            return String.format("redirect:/view/%d", invoice.getCustomer().getId());
+        }
+        flash.addFlashAttribute("error", "la factura no existe, no se pudo eliminar");
+        return "redirect:/list";
+    }
 }

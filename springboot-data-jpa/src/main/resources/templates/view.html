@@ -26,6 +26,7 @@
                             <th>Fecha</th>
                             <th>Total</th>
                             <th>Ver</th>
+                            <th>Eliminar</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -35,6 +36,7 @@
                             <td th:text="${invoice.createAt}"></td>
                             <td th:text="${invoice.total}"></td>
                             <td><a class="btn btn-primary btn-xs" th:href="@{'/invoice/view/' + ${invoice.id}}" th:text="'detalle'"></a></td>
+                            <td><a class="btn btn-danger btn-xs" th:href="@{'/invoice/delete/' + ${invoice.id}}" th:text="'eliminar'" onclick="return confirm('¿Desea eliminar la factura de forma permanente?');"></a></td>
                         </tr>
                     </tbody>
                 </table>

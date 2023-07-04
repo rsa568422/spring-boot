@@ -82,4 +82,10 @@ public class CustomerServiceImpl implements CustomerService {
     public Invoice findInvoiceById(Long id) {
         return invoiceDao.findById(id).orElse(null);
     }
+
+    @Override
+    @Transactional
+    public void deleteInvoice(Long id) {
+        invoiceDao.deleteById(id);
+    }
 }
