@@ -63,7 +63,7 @@ public class CustomerController {
         return "view";
     }
 
-    @GetMapping("/list")
+    @GetMapping({"/", "/list"})
     public String list(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
         Pageable pageRequest = PageRequest.of(page, 4);
         Page<Customer> customers = customerService.findAll(pageRequest);
