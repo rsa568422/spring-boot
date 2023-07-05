@@ -14,6 +14,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error,
+                        @RequestParam(value = "logout", required = false) String logout,
                         Model model, Principal principal, RedirectAttributes flash) {
         if (Objects.nonNull(principal)) {
             flash.addFlashAttribute("info", "Ya hay una sesión activa");
@@ -21,6 +22,9 @@ public class LoginController {
         }
         if (Objects.nonNull(error)) {
             model.addAttribute("error", "nombre de usuario o contraseña incorrectos");
+        }
+        if (Objects.nonNull(logout)) {
+            model.addAttribute("success", "sesión cerrada con éxito");
         }
         return "login";
     }
