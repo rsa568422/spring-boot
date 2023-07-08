@@ -10,6 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +29,7 @@ import udemy.springboot.datajpa.app.utils.paginators.PageRender;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Collection;
 import java.util.Objects;
 
 @Controller
@@ -78,6 +82,9 @@ public class CustomerController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (Objects.nonNull(auth)) {
             logger.info(String.format("Utilizando método estático SecurityContextHolder.getContext().getAuthentication() : '%s'", auth.getName()));
+        }
+        if (hasRole("ROLE_ADMIN")) {
+            logger.info("El usuario tiene acceso como ADMIN");
         }
         Pageable pageRequest = PageRequest.of(page, 4);
         Page<Customer> customers = customerService.findAll(pageRequest);
@@ -156,6 +163,14 @@ public class CustomerController {
             flash.addFlashAttribute("success", "Cliente eliminado con éxito");
         }
         return REDIRECT_TO_LIST;
+    }
+
+    private boolean hasRole(String role) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        if (Objects.isNull(securityContext)) return false;
+        Authentication authentication = securityContext.getAuthentication();
+        if (Objects.isNull(authentication)) return false;
+        return authentication.getAuthorities().contains(new SimpleGrantedAuthority(role));
     }
 
     private static final String ERROR = "error";
