@@ -9,8 +9,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -49,6 +50,7 @@ public class CustomerController {
         this.uploadFileService = uploadFileService;
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/uploads/{filename:.+}")
     public ResponseEntity<Resource> viewPhoto(@PathVariable("filename") String fileName) {
         Resource resource = null;
@@ -62,6 +64,7 @@ public class CustomerController {
                 .body(resource);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/view/{id}")
     public String view(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
         Customer customer = customerService.fetchByIdWithInvoices(id);
@@ -104,6 +107,7 @@ public class CustomerController {
         return "list";
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/form")
     public String create(Model model) {
         model.addAttribute(TITLE, "Formulario de cliente");
@@ -111,6 +115,7 @@ public class CustomerController {
         return "form";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/form/{id}")
     public String update(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
         Customer customer;
@@ -129,6 +134,7 @@ public class CustomerController {
         return "form";
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping("/form")
     public String save(@Valid Customer customer, BindingResult result, Model model,
                        @RequestParam("file") MultipartFile photo, RedirectAttributes flash,
@@ -160,6 +166,7 @@ public class CustomerController {
         return "redirect:list";
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/delete/{id}")
     public String delete(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
         if (id > 0) {
