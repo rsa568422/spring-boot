@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="layout/layout :: head"></head>
 <body>
     <header th:replace="layout/layout :: header"></header>
@@ -8,9 +8,9 @@
             <div class="card-header" th:text="${title}"></div>
             <div class="card-body">
                 <h4 class="card-title">
-                    <a th:href="@{'/invoice/form/' + ${customer.id}}" th:text="'crear factura'" class="btn btn-success btn-xs"></a>
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{'/invoice/form/' + ${customer.id}}" th:text="'crear factura'" class="btn btn-success btn-xs"></a>
                 </h4>
-                <img th:if="${#strings.length(customer.photo) > 0}" class="img-thumbnail rounded float-left" style="max-width: 25%" th:src="@{'/uploads/' + ${customer.photo}}" th:alt="${customer.photo}" />
+                <img th:if="${customer.photo != null && #strings.length(customer.photo) > 0}" class="img-thumbnail rounded float-left" style="max-width: 25%" th:src="@{'/uploads/' + ${customer.photo}}" th:alt="${customer.photo}" />
                 <ul class="list-group">
                     <li class="list-group-item" th:text="${customer.name}"></li>
                     <li class="list-group-item" th:text="${customer.surname}"></li>
@@ -25,8 +25,8 @@
                             <th>Descripción</th>
                             <th>Fecha</th>
                             <th>Total</th>
-                            <th>Ver</th>
-                            <th>Eliminar</th>
+                            <th sec:authorize="hasRole('ROLE_ADMIN')">Ver</th>
+                            <th sec:authorize="hasRole('ROLE_ADMIN')">Eliminar</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -35,8 +35,8 @@
                             <td th:text="${invoice.description}"></td>
                             <td th:text="${invoice.createAt}"></td>
                             <td th:text="${invoice.total}"></td>
-                            <td><a class="btn btn-primary btn-xs" th:href="@{'/invoice/view/' + ${invoice.id}}" th:text="'detalle'"></a></td>
-                            <td><a class="btn btn-danger btn-xs" th:href="@{'/invoice/delete/' + ${invoice.id}}" th:text="'eliminar'" onclick="return confirm('¿Desea eliminar la factura de forma permanente?');"></a></td>
+                            <td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-primary btn-xs" th:href="@{'/invoice/view/' + ${invoice.id}}" th:text="'detalle'"></a></td>
+                            <td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-danger btn-xs" th:href="@{'/invoice/delete/' + ${invoice.id}}" th:text="'eliminar'" onclick="return confirm('¿Desea eliminar la factura de forma permanente?');"></a></td>
                         </tr>
                     </tbody>
                 </table>

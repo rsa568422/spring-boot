@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head">
     <meta charset="UTF-8" />
     <title th:text="'Springboot + Thymeleaf + Data JPA: ' + ${title}"></title>
@@ -22,6 +22,19 @@
                         <a class="nav-link" th:href="@{/list}">Customers</a>
                     </li>
                 </ul>
+                <ul class="navbar-nav navbar-right">
+                    <li sec:authorize="!isAuthenticated()" class="btn btn-outline-primary"><a th:href="@{/login}">Login</a></li>
+                    <li sec:authorize="isAuthenticated()" class="dropdown">
+                        <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span sec:authentication="name"></span>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <form id="logoutForm" th:action="@{/logout}" method="post">
+                                <button class="dropdown-item" onclick="document.getElementById('logoutForm').submit();" type="submit">Logout</button>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </nav>
         <div class="alert alert-success" th:if="${success != null}" th:text="${success}"></div>
@@ -32,6 +45,9 @@
     <footer th:fragment="footer" class="container">
         <hr/>
         <img th:src="@{/images/spring.gif}" />
+        <p sec:authorize="isAuthenticated()">
+            Usuario: <span sec:authentication="name"></span> | Roles: <span sec:authentication="principal.authorities"></span>
+        </p>
         <p>Proyecto desarrollado con Springboot</p>
         <script th:src="@{/js/jquery-3.3.1.min.js}"></script>
         <script th:src="@{/js/popper.min.js}"></script>
