@@ -1,5 +1,7 @@
 package udemy.springboot.datajpa.app.controllers;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -7,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +31,8 @@ import java.util.Objects;
 @Controller
 @SessionAttributes("customer")
 public class CustomerController {
+
+    protected final Log logger = LogFactory.getLog(this.getClass());
 
     private final CustomerService customerService;
 
@@ -64,7 +70,15 @@ public class CustomerController {
     }
 
     @GetMapping({"/", "/list"})
-    public String list(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
+    public String list(@RequestParam(name = "page", defaultValue = "0") int page,
+                       Model model, Authentication authentication) {
+        if (Objects.nonNull(authentication)) {
+            logger.info(String.format("Hola usuario autenticado, tu nombre de usuario es '%s'", authentication.getName()));
+        }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (Objects.nonNull(auth)) {
+            logger.info(String.format("Utilizando método estático SecurityContextHolder.getContext().getAuthentication() : '%s'", auth.getName()));
+        }
         Pageable pageRequest = PageRequest.of(page, 4);
         Page<Customer> customers = customerService.findAll(pageRequest);
         PageRender<Customer> pageRender = new PageRender<>("/list", customers);
