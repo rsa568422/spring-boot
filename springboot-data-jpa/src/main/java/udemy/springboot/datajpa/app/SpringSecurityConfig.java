@@ -1,5 +1,6 @@
 package udemy.springboot.datajpa.app;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,9 +9,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import udemy.springboot.datajpa.app.authentication.handlers.LoginSuccessHandler;
 
 @Configuration
 public class SpringSecurityConfig {
+
+    private final LoginSuccessHandler successHandler;
+
+    @Autowired
+    public SpringSecurityConfig(LoginSuccessHandler successHandler) {
+        this.successHandler = successHandler;
+    }
 
     @Bean
     public static BCryptPasswordEncoder passwordEncoder() {
@@ -46,7 +55,7 @@ public class SpringSecurityConfig {
                 .antMatchers("/invoice/**").hasAnyRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/login").permitAll()
+                .formLogin().successHandler(successHandler).loginPage("/login").permitAll()
                 .and()
                 .logout().permitAll()
                 .and()
