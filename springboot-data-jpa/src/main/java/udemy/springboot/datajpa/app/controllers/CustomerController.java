@@ -14,6 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,10 +27,10 @@ import udemy.springboot.datajpa.app.models.services.CustomerService;
 import udemy.springboot.datajpa.app.models.services.UploadFileService;
 import udemy.springboot.datajpa.app.utils.paginators.PageRender;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Collection;
 import java.util.Objects;
 
 @Controller
@@ -75,7 +76,7 @@ public class CustomerController {
 
     @GetMapping({"/", "/list"})
     public String list(@RequestParam(name = "page", defaultValue = "0") int page,
-                       Model model, Authentication authentication) {
+                       Model model, Authentication authentication, HttpServletRequest request) {
         if (Objects.nonNull(authentication)) {
             logger.info(String.format("Hola usuario autenticado, tu nombre de usuario es '%s'", authentication.getName()));
         }
@@ -85,6 +86,14 @@ public class CustomerController {
         }
         if (hasRole("ROLE_ADMIN")) {
             logger.info("El usuario tiene acceso como ADMIN");
+        }
+        SecurityContextHolderAwareRequestWrapper securityContext =
+                new SecurityContextHolderAwareRequestWrapper(request, "ROLE_");
+        if (securityContext.isUserInRole("ADMIN")) {
+            logger.info("Utilizando método estático : ADMIN");
+        }
+        if (request.isUserInRole("ROLE_ADMIN")) {
+            logger.info("Utilizando HttpServletRequest : ADMIN");
         }
         Pageable pageRequest = PageRequest.of(page, 4);
         Page<Customer> customers = customerService.findAll(pageRequest);
