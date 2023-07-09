@@ -18,14 +18,12 @@ public class SpringSecurityConfig {
 
     private final LoginSuccessHandler successHandler;
 
-    @Autowired
-    public SpringSecurityConfig(LoginSuccessHandler successHandler) {
-        this.successHandler = successHandler;
-    }
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    @Bean
-    public static BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    @Autowired
+    public SpringSecurityConfig(LoginSuccessHandler successHandler, BCryptPasswordEncoder passwordEncoder) {
+        this.successHandler = successHandler;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Bean
@@ -34,12 +32,12 @@ public class SpringSecurityConfig {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
         manager.createUser(User
                 .withUsername("user")
-                .password(passwordEncoder().encode("user"))
+                .password(passwordEncoder.encode("user"))
                 .roles("USER")
                 .build());
         manager.createUser(User
                 .withUsername("admin")
-                .password(passwordEncoder().encode("admin"))
+                .password(passwordEncoder.encode("admin"))
                 .roles("ADMIN","USER")
                 .build());
 
