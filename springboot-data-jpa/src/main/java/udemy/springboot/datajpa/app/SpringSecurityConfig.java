@@ -3,6 +3,7 @@ package udemy.springboot.datajpa.app;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -12,20 +13,23 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import udemy.springboot.datajpa.app.authentication.handlers.LoginSuccessHandler;
 
+import javax.sql.DataSource;
+
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @Configuration
 public class SpringSecurityConfig {
 
     private final LoginSuccessHandler successHandler;
 
-    @Autowired
-    public SpringSecurityConfig(LoginSuccessHandler successHandler) {
-        this.successHandler = successHandler;
-    }
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    @Bean
-    public static BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    private final DataSource dataSource;
+
+    @Autowired
+    public SpringSecurityConfig(LoginSuccessHandler successHandler, BCryptPasswordEncoder passwordEncoder, DataSource dataSource) {
+        this.successHandler = successHandler;
+        this.passwordEncoder = passwordEncoder;
+        this.dataSource = dataSource;
     }
 
     @Bean
@@ -34,12 +38,12 @@ public class SpringSecurityConfig {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
         manager.createUser(User
                 .withUsername("user")
-                .password(passwordEncoder().encode("user"))
+                .password(passwordEncoder.encode("user"))
                 .roles("USER")
                 .build());
         manager.createUser(User
                 .withUsername("admin")
-                .password(passwordEncoder().encode("admin"))
+                .password(passwordEncoder.encode("admin"))
                 .roles("ADMIN","USER")
                 .build());
 
@@ -64,6 +68,15 @@ public class SpringSecurityConfig {
                 .exceptionHandling().accessDeniedPage("/error_403");
 
         return http.build();
+    }
+
+    @Autowired
+    public void configurerGlobal(AuthenticationManagerBuilder builder) throws Exception {
+        builder.jdbcAuthentication()
+                .dataSource(dataSource)
+                .passwordEncoder(passwordEncoder)
+                .usersByUsernameQuery("select username, password, enabled from users where username = ?")
+                .authoritiesByUsernameQuery("select u.username, a.authority from authorities a inner join users u on (a.user_id = u.id) where u.username = ?");
     }
 
 }
