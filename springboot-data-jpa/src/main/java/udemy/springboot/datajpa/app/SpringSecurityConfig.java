@@ -13,8 +13,6 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import udemy.springboot.datajpa.app.authentication.handlers.LoginSuccessHandler;
 
-import javax.sql.DataSource;
-
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @Configuration
 public class SpringSecurityConfig {
@@ -23,13 +21,13 @@ public class SpringSecurityConfig {
 
     private final BCryptPasswordEncoder passwordEncoder;
 
-    private final DataSource dataSource;
+    private final UserDetailsService userDetailsService;
 
     @Autowired
-    public SpringSecurityConfig(LoginSuccessHandler successHandler, BCryptPasswordEncoder passwordEncoder, DataSource dataSource) {
+    public SpringSecurityConfig(LoginSuccessHandler successHandler, BCryptPasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
         this.successHandler = successHandler;
         this.passwordEncoder = passwordEncoder;
-        this.dataSource = dataSource;
+        this.userDetailsService = userDetailsService;
     }
 
     @Bean
@@ -72,11 +70,8 @@ public class SpringSecurityConfig {
 
     @Autowired
     public void configurerGlobal(AuthenticationManagerBuilder builder) throws Exception {
-        builder.jdbcAuthentication()
-                .dataSource(dataSource)
-                .passwordEncoder(passwordEncoder)
-                .usersByUsernameQuery("select username, password, enabled from users where username = ?")
-                .authoritiesByUsernameQuery("select u.username, a.authority from authorities a inner join users u on (a.user_id = u.id) where u.username = ?");
+        builder.userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder);
     }
 
 }

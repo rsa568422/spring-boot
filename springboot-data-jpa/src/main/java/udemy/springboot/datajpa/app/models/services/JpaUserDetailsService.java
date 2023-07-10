@@ -42,6 +42,7 @@ public class JpaUserDetailsService implements UserDetailsService {
                 .stream()
                 .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
                 .collect(Collectors.toList());
+        authorities.stream().map(authority -> String.format("Role: %s", authority)).forEach(LOG::info);
         if (authorities.isEmpty()) {
             String message = String.format("El usuario %s no tiene roles asignados", username);
             LOG.error(message);

@@ -40,3 +40,10 @@ INSERT INTO invoice_items (quantity, invoice_id, product_id) VALUES(1, 1, 7);
 
 INSERT INTO invoices (description, observations, customer_id, create_at) VALUES('Factura Bicicleta', 'Alguna nota importante!', 1, NOW());
 INSERT INTO invoice_items (quantity, invoice_id, product_id) VALUES(3, 2, 6);
+
+INSERT INTO users (username, password, enabled) VALUES('roberto', '$2a$10$Hf9eKwgKUVexBywXH4C5Zew6MPzl9xqVoo2yrgIQSb50QZP02FiC.', 1);
+INSERT INTO users (username, password, enabled) VALUES('admin', '$2a$10$NTLzJPuI8a/UZd9jnAqlCOrc6Z30MzgxxFlMGMANWOtwS7Yn1YOZm', 1);
+
+INSERT INTO authorities (user_id, authority) VALUES (1, 'ROLE_USER');
+INSERT INTO authorities (user_id, authority) VALUES (2, 'ROLE_USER');
+INSERT INTO authorities (user_id, authority) VALUES (2, 'ROLE_ADMIN');
