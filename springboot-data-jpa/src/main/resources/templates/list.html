@@ -14,10 +14,10 @@
                     <thead class="table-dark">
                     <tr>
                         <th sec:authorize="hasRole('ROLE_USER')">id</th>
-                        <th>nombre</th>
-                        <th>apellido</th>
-                        <th>email</th>
-                        <th>fecha</th>
+                        <th th:text="#{text.customer.name}"></th>
+                        <th th:text="#{text.customer.surname}"></th>
+                        <th th:text="#{text.customer.email}"></th>
+                        <th th:text="#{text.customer.createAt}"></th>
                         <th sec:authorize="hasRole('ROLE_ADMIN')">crear factura</th>
                         <th sec:authorize="hasRole('ROLE_ADMIN')">editar</th>
                         <th sec:authorize="hasRole('ROLE_ADMIN')">eliminar</th>
