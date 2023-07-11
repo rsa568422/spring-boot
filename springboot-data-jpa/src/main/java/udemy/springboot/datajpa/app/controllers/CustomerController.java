@@ -28,6 +28,7 @@ import udemy.springboot.datajpa.app.models.entities.Customer;
 import udemy.springboot.datajpa.app.models.services.CustomerService;
 import udemy.springboot.datajpa.app.models.services.UploadFileService;
 import udemy.springboot.datajpa.app.utils.paginators.PageRender;
+import udemy.springboot.datajpa.app.views.xml.CustomerList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -80,6 +81,11 @@ public class CustomerController {
         model.addAttribute(TITLE, String.format("Detalles del cliente: %s", customer.getName()));
         model.addAttribute(CUSTOMER, customer);
         return "view";
+    }
+
+    @GetMapping("/list-rest")
+    public @ResponseBody CustomerList list() {
+        return new CustomerList(customerService.findAll());
     }
 
     @GetMapping({"/", "/list"})
