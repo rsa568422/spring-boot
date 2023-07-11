@@ -1,6 +1,7 @@
 package udemy.springboot.datajpa.app.views.xlsx;
 
 import org.apache.poi.ss.usermodel.*;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.document.AbstractXlsxView;
 import udemy.springboot.datajpa.app.models.entities.Invoice;
@@ -18,11 +19,12 @@ public class InvoiceXlsxView extends AbstractXlsxView {
                                       HttpServletRequest request, HttpServletResponse response) throws Exception {
         Invoice invoice = (Invoice) model.get("invoice");
         Sheet sheet = workbook.createSheet("Factura");
+        MessageSourceAccessor messages = getMessageSourceAccessor();
         response.setHeader("Content-Disposition", String.format("attachment; filename=\"invoice_%s.xlsx\"", invoice.getId()));
 
         Row row = sheet.createRow(0);
         Cell cell = row.createCell(0);
-        cell.setCellValue("Datos del cliente");
+        cell.setCellValue(messages.getMessage("text.pdf.customer.title"));
 
         row = sheet.createRow(1);
         cell = row.createCell(0);
@@ -32,10 +34,10 @@ public class InvoiceXlsxView extends AbstractXlsxView {
         cell = row.createCell(0);
         cell.setCellValue(invoice.getCustomer().getEmail());
 
-        sheet.createRow(4).createCell(0).setCellValue("Datos de la factura");
-        sheet.createRow(5).createCell(0).setCellValue(String.format("Factura: %s", invoice.getId()));
-        sheet.createRow(6).createCell(0).setCellValue(String.format("Descripción: %s", invoice.getDescription()));
-        sheet.createRow(7).createCell(0).setCellValue(String.format("Fecha: %s", invoice.getCreateAt()));
+        sheet.createRow(4).createCell(0).setCellValue(messages.getMessage("text.pdf.invoice.title"));
+        sheet.createRow(5).createCell(0).setCellValue(String.format("%s: %s", messages.getMessage("text.pdf.invoice.id"), invoice.getId()));
+        sheet.createRow(6).createCell(0).setCellValue(String.format("%s: %s", messages.getMessage("text.pdf.invoice.description"), invoice.getDescription()));
+        sheet.createRow(7).createCell(0).setCellValue(String.format("%s: %s", messages.getMessage("text.pdf.invoice.date"), invoice.getCreateAt()));
 
         CellStyle tHeadStyle = workbook.createCellStyle();
         tHeadStyle.setBorderBottom(BorderStyle.MEDIUM);
@@ -52,10 +54,10 @@ public class InvoiceXlsxView extends AbstractXlsxView {
         tBodyStyle.setBorderLeft(BorderStyle.THIN);
 
         Row header = sheet.createRow(9);
-        header.createCell(0).setCellValue("Producto");
-        header.createCell(1).setCellValue("Precio");
-        header.createCell(2).setCellValue("Cantidad");
-        header.createCell(3).setCellValue("Total");
+        header.createCell(0).setCellValue(messages.getMessage("text.pdf.invoice-line.product"));
+        header.createCell(1).setCellValue(messages.getMessage("text.pdf.invoice-line.price"));
+        header.createCell(2).setCellValue(messages.getMessage("text.pdf.invoice-line.quantity"));
+        header.createCell(3).setCellValue(messages.getMessage("text.pdf.invoice-line.total"));
         header.getCell(0).setCellStyle(tHeadStyle);
         header.getCell(1).setCellStyle(tHeadStyle);
         header.getCell(2).setCellStyle(tHeadStyle);
@@ -84,7 +86,7 @@ public class InvoiceXlsxView extends AbstractXlsxView {
         Row totalRow = sheet.createRow(integer.get());
 
         cell = totalRow.createCell(2);
-        cell.setCellValue("Total: ");
+        cell.setCellValue(messages.getMessage("text.pdf.invoice.total"));
         cell.setCellStyle(tBodyStyle);
 
         cell = totalRow.createCell(3);
