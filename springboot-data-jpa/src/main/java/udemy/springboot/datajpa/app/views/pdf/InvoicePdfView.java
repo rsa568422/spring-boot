@@ -20,11 +20,13 @@ public class InvoicePdfView extends AbstractPdfView {
         Invoice invoice = (Invoice) model.get("invoice");
 
         PdfPTable customerTable = new PdfPTable(1);
+        customerTable.setSpacingAfter(20);
         customerTable.addCell("Datos del cliente");
         customerTable.addCell(String.format("%s %s", invoice.getCustomer().getName(), invoice.getCustomer().getSurname()));
         customerTable.addCell(invoice.getCustomer().getEmail());
 
         PdfPTable invoiceTable = new PdfPTable(1);
+        invoiceTable.setSpacingAfter(20);
         customerTable.addCell("Datos de la factura");
         customerTable.addCell(String.format("Factura: %s", invoice.getId()));
         customerTable.addCell(String.format("Descripción: %s", invoice.getDescription()));
