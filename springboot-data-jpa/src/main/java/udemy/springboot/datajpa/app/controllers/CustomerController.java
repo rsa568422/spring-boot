@@ -3,6 +3,7 @@ package udemy.springboot.datajpa.app.controllers;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Locale;
 import java.util.Objects;
 
 @Controller
@@ -44,10 +46,13 @@ public class CustomerController {
 
     private final UploadFileService uploadFileService;
 
+    private final MessageSource messageSource;
+
     @Autowired
-    public CustomerController(CustomerService customerService, UploadFileService uploadFileService) {
+    public CustomerController(CustomerService customerService, UploadFileService uploadFileService, MessageSource messageSource) {
         this.customerService = customerService;
         this.uploadFileService = uploadFileService;
+        this.messageSource = messageSource;
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
@@ -78,8 +83,8 @@ public class CustomerController {
     }
 
     @GetMapping({"/", "/list"})
-    public String list(@RequestParam(name = "page", defaultValue = "0") int page,
-                       Model model, Authentication authentication, HttpServletRequest request) {
+    public String list(@RequestParam(name = "page", defaultValue = "0") int page, Model model,
+                       Authentication authentication, HttpServletRequest request, Locale locale) {
         if (Objects.nonNull(authentication)) {
             logger.info(String.format("Hola usuario autenticado, tu nombre de usuario es '%s'", authentication.getName()));
         }
@@ -101,7 +106,7 @@ public class CustomerController {
         Pageable pageRequest = PageRequest.of(page, 4);
         Page<Customer> customers = customerService.findAll(pageRequest);
         PageRender<Customer> pageRender = new PageRender<>("/list", customers);
-        model.addAttribute(TITLE, "Listado de clientes");
+        model.addAttribute(TITLE, messageSource.getMessage("text.customer.title", null, locale));
         model.addAttribute("customers", customers);
         model.addAttribute("page", pageRender);
         return "list";
